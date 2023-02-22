@@ -15,7 +15,24 @@ export default function App() {
         source={require("./assets/images/PhotoBG.jpg")}
       >
         <View style={styles.formContainer}></View>
-        <TextInput style={styles.formInput} />
+        <TextInput
+          style={styles.formInput}
+          textAlign={"left"}
+          placeholder={"Логин"}
+          placeholderTextColor={"#BDBDBD"}
+        />
+        <TextInput
+          style={styles.formInput}
+          textAlign={"left"}
+          placeholder={"Адрес электронной почты"}
+          placeholderTextColor={"#BDBDBD"}
+        />
+        <TextInput
+          style={styles.formInput}
+          textAlign={"left"}
+          placeholder={"Пароль"}
+          placeholderTextColor={"#BDBDBD"}
+        />
       </ImageBackground>
       {/* <Text>Open up App.js to start working on your app!!!</Text> */}
       <StatusBar style="auto" />
@@ -42,7 +59,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     justifyContent: "center",
-    // alignItems: "center",
+    alignItems: "center",
   },
   formInput: {
     // width: 343,
@@ -51,8 +68,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
+    marginHorizontal: 16,
+    color: "#212121",
+    paddingTop: 16,
     paddingLeft: 16,
+    paddingBottom: 16,
     paddingRight: 16,
+    marginBottom: 16,
+
     // alignItems: "center",
   },
 });
