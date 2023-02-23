@@ -5,38 +5,45 @@ import {
   View,
   ImageBackground,
   TextInput,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 export default function App() {
   return (
+    // <TouchableWithoutFeedback onPress={keyboardHide}>
     <View style={styles.container}>
       <ImageBackground
         style={styles.imageBg}
         source={require("./assets/images/PhotoBG.jpg")}
       >
-        <View style={styles.formContainer}></View>
-        <TextInput
-          style={styles.formInput}
-          textAlign={"left"}
-          placeholder={"Логин"}
-          placeholderTextColor={"#BDBDBD"}
-        />
-        <TextInput
-          style={styles.formInput}
-          textAlign={"left"}
-          placeholder={"Адрес электронной почты"}
-          placeholderTextColor={"#BDBDBD"}
-        />
-        <TextInput
-          style={styles.formInput}
-          textAlign={"left"}
-          placeholder={"Пароль"}
-          placeholderTextColor={"#BDBDBD"}
-        />
+        <View style={styles.form}>
+          <Text style={styles.inputTitle}>Регистрация</Text>
+          <View style={styles.textInputeWrapper}>
+            <TextInput
+              style={styles.formInput}
+              textAlign={"left"}
+              placeholder={"Логин"}
+              placeholderTextColor={"#BDBDBD"}
+            />
+            <TextInput
+              style={styles.formInput}
+              textAlign={"left"}
+              placeholder={"Адрес электронной почты"}
+              placeholderTextColor={"#BDBDBD"}
+            />
+            <TextInput
+              style={styles.formInput}
+              textAlign={"left"}
+              placeholder={"Пароль"}
+              placeholderTextColor={"#BDBDBD"}
+            />
+          </View>
+        </View>
       </ImageBackground>
-      {/* <Text>Open up App.js to start working on your app!!!</Text> */}
+
       <StatusBar style="auto" />
     </View>
+    // </TouchableWithoutFeedback>
   );
 }
 
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
   },
-  formContainer: {
+  form: {
     // width: 375,
     height: 549,
     left: 0,
@@ -58,9 +65,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
   },
+  inputTitle: {
+    fontFamily: "Roboto",
+    fontSize: 30,
+    fontStyle: "normal",
+    fontWeight: 500,
+    lineHeight: 35,
+    width: 184,
+    textAlign: "center",
+    color: "#212121",
+    // marginTop: 92,
+    // height: 35px;
+    // left: calc(50% - 184px/2 + 0.5px);
+    // top: 0px;
+  },
+  // textInputeWrapper: {
+  //   marginTop: 160,
+  // },
   formInput: {
     // width: 343,
     height: 50,
