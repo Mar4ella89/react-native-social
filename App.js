@@ -44,7 +44,7 @@ export default function App() {
                   secureTextEntry={true}
                 />
               </View>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity activeOpacity={0.8} style={styles.button}>
                 <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
               </TouchableOpacity>
             </View>
@@ -65,12 +65,14 @@ const styles = StyleSheet.create({
   imageBg: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   formContainer: {
-    height: 549,
-    left: 0,
-    top: 263,
+    // justifyContent: "flex-end",
+    // height: 549,
+    // left: 0,
+    // top: 263,
+    bottom: 0,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -126,22 +128,13 @@ const styles = StyleSheet.create({
 
     justifyContent: "center",
     alignItems: "center",
-
-    // gap: 12px;
-    // position: absolute;
-
-    // bottom: 113px;
   },
   buttonTitle: {
     fontFamily: "Roboto",
     fontSize: 16,
     fontStyle: "normal",
+    lineHeight: 19,
 
     color: "#fff",
-    //     font-family: 'Roboto';
-    // font-style: normal;
-    // font-weight: 400;
-    // font-size: 16px;
-    // line-height: 19px;
   },
 });
