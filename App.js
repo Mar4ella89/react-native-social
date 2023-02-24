@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 
 export default function App() {
@@ -24,6 +24,7 @@ export default function App() {
             <View style={styles.form}>
               <View style={styles.textInputeWrapper}>
                 <TextInput
+                  // style={{ marginBottom: 16 }}
                   style={styles.formInput}
                   textAlign={"left"}
                   placeholder={"Логин"}
@@ -43,7 +44,9 @@ export default function App() {
                   secureTextEntry={true}
                 />
               </View>
-              <Button style={styles.button} title="Зарегистрироваться" />
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
@@ -73,7 +76,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
   },
 
-  form: {},
+  form: {
+    marginHorizontal: 16,
+  },
 
   avatarContainer: {
     position: "absolute",
@@ -95,10 +100,8 @@ const styles = StyleSheet.create({
   },
   textInputeWrapper: {
     marginTop: 32,
-    marginHorizontal: 16,
   },
   formInput: {
-    // width: 343,
     height: 50,
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
@@ -108,25 +111,37 @@ const styles = StyleSheet.create({
     color: "#212121",
     paddingTop: 16,
     paddingLeft: 16,
-    paddingBottom: 16,
     paddingRight: 16,
+    paddingBottom: 16,
     marginBottom: 16,
 
-    // alignItems: "center",
+    alignItems: "center",
   },
 
   button: {
-    //     display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // padding: 16px 32px;
+    backgroundColor: "#FF6C00",
+
+    height: 51,
+    borderRadius: 100,
+
+    justifyContent: "center",
+    alignItems: "center",
+
     // gap: 12px;
     // position: absolute;
-    // height: 51px;
-    // left: 16px;
-    // right: 16px;
+
     // bottom: 113px;
-    // background: #FF6C00;
-    // border-radius: 100px;
+  },
+  buttonTitle: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontStyle: "normal",
+
+    color: "#fff",
+    //     font-family: 'Roboto';
+    // font-style: normal;
+    // font-weight: 400;
+    // font-size: 16px;
+    // line-height: 19px;
   },
 });
