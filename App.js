@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -11,6 +13,8 @@ import {
 } from "react-native";
 
 export default function App() {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -18,23 +22,32 @@ export default function App() {
           style={styles.imageBg}
           source={require("./assets/images/PhotoBG.jpg")}
         >
-          <View style={styles.formContainer}>
+          <View
+            style={
+              styles.formContainer
+              // {
+              // ...styles.formContainer,
+              // marginBottom: isShowKeyboard ? -2 : 52,
+              // }
+            }
+          >
             <View style={styles.avatarContainer}></View>
             <Text style={styles.title}>Регистрация</Text>
             <View style={styles.form}>
               <View style={styles.textInputeWrapper}>
                 <TextInput
-                  // style={{ marginBottom: 16 }}
-                  style={styles.formInput}
+                  style={{ ...styles.formInput, marginBottom: 16 }}
                   textAlign={"left"}
                   placeholder={"Логин"}
                   placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
                 />
                 <TextInput
-                  style={styles.formInput}
+                  style={{ ...styles.formInput, marginBottom: 16 }}
                   textAlign={"left"}
                   placeholder={"Адрес электронной почты"}
                   placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsShowKeyboard(true)}
                 />
                 <TextInput
                   style={styles.formInput}
@@ -42,12 +55,14 @@ export default function App() {
                   placeholder={"Пароль"}
                   placeholderTextColor={"#BDBDBD"}
                   secureTextEntry={true}
+                  onFocus={() => setIsShowKeyboard(true)}
                 />
               </View>
               <TouchableOpacity activeOpacity={0.8} style={styles.button}>
                 <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
           </View>
         </ImageBackground>
 
@@ -72,10 +87,11 @@ const styles = StyleSheet.create({
     // height: 549,
     // left: 0,
     // top: 263,
-    bottom: 0,
+    // bottom: 0,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    paddingBottom: 78,
   },
 
   form: {
@@ -102,6 +118,7 @@ const styles = StyleSheet.create({
   },
   textInputeWrapper: {
     marginTop: 32,
+    marginBottom: 42,
   },
   formInput: {
     height: 50,
@@ -115,17 +132,14 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 16,
-    marginBottom: 16,
 
     alignItems: "center",
   },
 
   button: {
     backgroundColor: "#FF6C00",
-
     height: 51,
     borderRadius: 100,
-
     justifyContent: "center",
     alignItems: "center",
   },
@@ -136,5 +150,13 @@ const styles = StyleSheet.create({
     lineHeight: 19,
 
     color: "#fff",
+  },
+  feedBack: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontStyle: "normal",
+    textAlign: "center",
+    marginTop: 16,
+    color: "#1B4371",
   },
 });
