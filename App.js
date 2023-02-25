@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { StatusBar } from "expo-status-bar";
 import {
@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 
 export default function App() {
@@ -22,48 +23,55 @@ export default function App() {
           style={styles.imageBg}
           source={require("./assets/images/PhotoBG.jpg")}
         >
-          <View
-            style={
-              styles.formContainer
-              // {
-              // ...styles.formContainer,
-              // marginBottom: isShowKeyboard ? -2 : 52,
-              // }
-            }
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View style={styles.avatarContainer}></View>
-            <Text style={styles.title}>Регистрация</Text>
-            <View style={styles.form}>
-              <View style={styles.textInputeWrapper}>
-                <TextInput
-                  style={{ ...styles.formInput, marginBottom: 16 }}
-                  textAlign={"left"}
-                  placeholder={"Логин"}
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
-                <TextInput
-                  style={{ ...styles.formInput, marginBottom: 16 }}
-                  textAlign={"left"}
-                  placeholder={"Адрес электронной почты"}
-                  placeholderTextColor={"#BDBDBD"}
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
-                <TextInput
-                  style={styles.formInput}
-                  textAlign={"left"}
-                  placeholder={"Пароль"}
-                  placeholderTextColor={"#BDBDBD"}
-                  secureTextEntry={true}
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
+            <View
+              style={
+                styles.formContainer
+                // {
+                //   ...styles.formContainer,
+                //   marginBottom: isShowKeyboard ? -180 : 0,
+                // }
+              }
+            >
+              <View style={styles.avatarContainer}></View>
+              <Text style={styles.title}>Регистрация</Text>
+              <View style={styles.form}>
+                <View style={styles.textInputeWrapper}>
+                  <TextInput
+                    style={{ ...styles.formInput, marginBottom: 16 }}
+                    textAlign={"left"}
+                    placeholder={"Логин"}
+                    placeholderTextColor={"#BDBDBD"}
+                    onFocus={() => setIsShowKeyboard(true)}
+                  />
+                  <TextInput
+                    style={{ ...styles.formInput, marginBottom: 16 }}
+                    textAlign={"left"}
+                    placeholder={"Адрес электронной почты"}
+                    placeholderTextColor={"#BDBDBD"}
+                    onFocus={() => setIsShowKeyboard(true)}
+                  />
+                  <View>
+                    <TextInput
+                      style={styles.formInput}
+                      textAlign={"left"}
+                      placeholder={"Пароль"}
+                      placeholderTextColor={"#BDBDBD"}
+                      secureTextEntry={true}
+                      onFocus={() => setIsShowKeyboard(true)}
+                    />
+                    <Text style={styles.passwordText}>Показать</Text>
+                  </View>
+                </View>
+                <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                  <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-                <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
-              </TouchableOpacity>
+              <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
             </View>
-            <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
-          </View>
+          </KeyboardAvoidingView>
         </ImageBackground>
 
         <StatusBar style="auto" />
@@ -83,6 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   formContainer: {
+    // position: "absolute",
     // justifyContent: "flex-end",
     // height: 549,
     // left: 0,
@@ -127,6 +136,10 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
 
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontStyle: "normal",
+
     color: "#212121",
     paddingTop: 16,
     paddingLeft: 16,
@@ -134,6 +147,18 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
 
     alignItems: "center",
+  },
+
+  passwordText: {
+    position: "absolute",
+    right: 16,
+    top: 15,
+
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontStyle: "normal",
+
+    color: "#1B4371",
   },
 
   button: {
