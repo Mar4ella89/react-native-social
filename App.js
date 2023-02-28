@@ -25,7 +25,7 @@ export default function App() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-125}
+            keyboardVerticalOffset={-140}
             // contentContainerStyle={{ flex: 1, justifyContent: "center" }}
           >
             <View style={styles.formContainer}>
