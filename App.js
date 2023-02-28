@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 export default function App() {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  // const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -25,16 +25,10 @@ export default function App() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={-125}
+            // contentContainerStyle={{ flex: 1, justifyContent: "center" }}
           >
-            <View
-              style={
-                styles.formContainer
-                // {
-                //   ...styles.formContainer,
-                //   marginBottom: isShowKeyboard ? -180 : 0,
-                // }
-              }
-            >
+            <View style={styles.formContainer}>
               <View style={styles.avatarContainer}></View>
               <Text style={styles.title}>Регистрация</Text>
               <View style={styles.form}>
@@ -44,14 +38,14 @@ export default function App() {
                     textAlign={"left"}
                     placeholder={"Логин"}
                     placeholderTextColor={"#BDBDBD"}
-                    onFocus={() => setIsShowKeyboard(true)}
+                    // onFocus={() => setIsShowKeyboard(true)}
                   />
                   <TextInput
                     style={{ ...styles.formInput, marginBottom: 16 }}
                     textAlign={"left"}
                     placeholder={"Адрес электронной почты"}
                     placeholderTextColor={"#BDBDBD"}
-                    onFocus={() => setIsShowKeyboard(true)}
+                    // onFocus={() => setIsShowKeyboard(true)}
                   />
                   <View>
                     <TextInput
@@ -60,7 +54,7 @@ export default function App() {
                       placeholder={"Пароль"}
                       placeholderTextColor={"#BDBDBD"}
                       secureTextEntry={true}
-                      onFocus={() => setIsShowKeyboard(true)}
+                      // onFocus={() => setIsShowKeyboard(true)}
                     />
                     <Text style={styles.passwordText}>Показать</Text>
                   </View>
@@ -91,12 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   formContainer: {
-    // position: "absolute",
-    // justifyContent: "flex-end",
-    // height: 549,
-    // left: 0,
-    // top: 263,
-    // bottom: 0,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -113,8 +101,12 @@ const styles = StyleSheet.create({
     height: 120,
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
-    top: -60,
-    left: 128,
+    alignSelf: "center",
+    // left: 0,
+    // right: 0,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: -60,
   },
 
   title: {
@@ -152,7 +144,7 @@ const styles = StyleSheet.create({
   passwordText: {
     position: "absolute",
     right: 16,
-    top: 15,
+    top: 14,
 
     fontFamily: "Roboto",
     fontSize: 16,
