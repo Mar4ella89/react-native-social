@@ -38,6 +38,7 @@ export default function RegistrationScreen() {
                     textAlign={"left"}
                     placeholder={"Логин"}
                     placeholderTextColor={"#BDBDBD"}
+                    // onFocus={}
                   />
                   <TextInput
                     style={{ ...styles.formInput, marginBottom: 16 }}
