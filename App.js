@@ -9,6 +9,7 @@ export default function App() {
     <>
       {/* <RegistrationScreen /> */}
       <LoginScreen />
+      {/* <StatusBar style="auto" /> */}
     </>
   );
 

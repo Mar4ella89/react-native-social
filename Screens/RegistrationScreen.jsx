@@ -140,12 +140,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
 
     color: "#212121",
-    // paddingTop: 8,
-    paddingLeft: 16,
-    // paddingRight: 16,
-    // paddingBottom: 8,
 
-    // alignItems: "center",
+    paddingLeft: 16,
   },
 
   passwordText: {

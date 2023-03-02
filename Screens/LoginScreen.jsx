@@ -10,6 +10,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 
 import * as SplashScreen from "expo-splash-screen";
@@ -23,15 +24,28 @@ const initialState = {
 export default function LoginScreen() {
   const [state, setState] = useState(initialState);
   //   const [isReady, setIsReady] = useState(false);
+  const [dimensions, setdimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
 
   const hadleInfo = () => {
     setState(initialState);
-    console.log(state);
   };
 
   const [fontsLoader] = useFonts({
     "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
   });
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setdimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   useEffect(() => {
     async function prepare() {
@@ -59,7 +73,7 @@ export default function LoginScreen() {
           >
             <View style={styles.formContainer}>
               <Text style={styles.title}>Войти</Text>
-              <View style={styles.form}>
+              <View style={{ ...styles.form, width: dimensions }}>
                 <View style={styles.textInputeWrapper}>
                   <TextInput
                     style={{ ...styles.formInput, marginBottom: 16 }}
@@ -128,10 +142,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingBottom: 132,
+    alignItems: "center",
   },
 
   form: {
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
   },
 
   title: {
