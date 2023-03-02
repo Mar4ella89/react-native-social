@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -11,7 +12,40 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font/build/FontHooks";
+
+const initialState = {
+  email: "",
+  password: "",
+};
+
 export default function LoginScreen() {
+  const [state, setState] = useState(initialState);
+  //   const [isReady, setIsReady] = useState(false);
+
+  const hadleInfo = () => {
+    setState(initialState);
+    console.log(state);
+  };
+
+  const [fontsLoader] = useFonts({
+    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  if (!fontsLoader) {
+    return null;
+  } else {
+    SplashScreen.hideAsync();
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -32,6 +66,13 @@ export default function LoginScreen() {
                     textAlign={"left"}
                     placeholder={"Адрес электронной почты"}
                     placeholderTextColor={"#BDBDBD"}
+                    value={state.email}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        email: value,
+                      }))
+                    }
                   />
 
                   <View>
@@ -41,11 +82,22 @@ export default function LoginScreen() {
                       placeholder={"Пароль"}
                       placeholderTextColor={"#BDBDBD"}
                       secureTextEntry={true}
+                      value={state.password}
+                      onChangeText={(value) =>
+                        setState((prevState) => ({
+                          ...prevState,
+                          password: value,
+                        }))
+                      }
                     />
                     <Text style={styles.passwordText}>Показать</Text>
                   </View>
                 </View>
-                <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.button}
+                  onPress={hadleInfo}
+                >
                   <Text style={styles.buttonTitle}>Войти</Text>
                 </TouchableOpacity>
               </View>
@@ -55,7 +107,6 @@ export default function LoginScreen() {
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
-
         <StatusBar style="auto" />
       </View>
     </TouchableWithoutFeedback>
@@ -84,7 +135,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 30,
     fontStyle: "normal",
     textAlign: "center",
@@ -102,17 +153,12 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
 
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
 
     color: "#212121",
-    // paddingTop: 8,
     paddingLeft: 16,
-    // paddingRight: 16,
-    // paddingBottom: 8,
-
-    // alignItems: "center",
   },
 
   passwordText: {
@@ -143,7 +189,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   feedBack: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
     textAlign: "center",
