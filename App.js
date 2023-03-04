@@ -13,10 +13,3 @@ export default function App() {
     </>
   );
 }
-
-// const styles = StyleSheet.create({
-//   containerMain: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//   },
-// });

@@ -23,9 +23,16 @@ const initialState = {
 };
 
 export default function RegistrationScreen() {
+  const [state, setState] = useState(initialState);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [dimensions, setdimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const hadleInfo = useCallback(() => {
     setState(initialState);
@@ -65,7 +72,7 @@ export default function RegistrationScreen() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-110}
+            keyboardVerticalOffset={-140}
           >
             <View style={styles.formContainer}>
               <View style={styles.avatarContainer}>
@@ -79,30 +86,80 @@ export default function RegistrationScreen() {
                 <Text style={styles.title}>Регистрация</Text>
                 <View style={styles.textInputeWrapper}>
                   <TextInput
-                    style={{ ...styles.formInput, marginBottom: 16 }}
+                    style={[
+                      {
+                        ...styles.formInput,
+                        marginBottom: 16,
+                      },
+                      isFocused === "login" ? styles.focused : null,
+                    ]}
                     textAlign={"left"}
                     placeholder={"Логин"}
                     placeholderTextColor={"#BDBDBD"}
-                    // onFocus={}
+                    onFocus={() => setIsFocused("login")}
+                    onBlur={() => setIsFocused(null)}
+                    value={state.login}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        login: value,
+                      }))
+                    }
                   />
                   <TextInput
-                    style={{ ...styles.formInput, marginBottom: 16 }}
+                    style={[
+                      {
+                        ...styles.formInput,
+                        marginBottom: 16,
+                      },
+                      isFocused === "email" ? styles.focused : null,
+                    ]}
                     textAlign={"left"}
                     placeholder={"Адрес электронной почты"}
                     placeholderTextColor={"#BDBDBD"}
+                    onFocus={() => setIsFocused("email")}
+                    onBlur={() => setIsFocused(null)}
+                    value={state.email}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        email: value,
+                      }))
+                    }
                   />
                   <View>
                     <TextInput
-                      style={styles.formInput}
+                      style={[
+                        styles.formInput,
+                        isFocused === "password" ? styles.focused : null,
+                      ]}
                       textAlign={"left"}
                       placeholder={"Пароль"}
                       placeholderTextColor={"#BDBDBD"}
-                      secureTextEntry={true}
+                      onFocus={() => setIsFocused("password")}
+                      onBlur={() => setIsFocused(null)}
+                      secureTextEntry={!showPassword}
+                      value={state.password}
+                      onChangeText={(value) =>
+                        setState((prevState) => ({
+                          ...prevState,
+                          password: value,
+                        }))
+                      }
                     />
-                    <Text style={styles.passwordText}>Показать</Text>
+                    <Text
+                      style={styles.passwordText}
+                      onPress={toggleShowPassword}
+                    >
+                      Показать
+                    </Text>
                   </View>
                 </View>
-                <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.button}
+                  onPress={hadleInfo}
+                >
                   <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>
               </View>
@@ -111,7 +168,7 @@ export default function RegistrationScreen() {
           </KeyboardAvoidingView>
         </ImageBackground>
 
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -131,8 +188,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingBottom: 78,
-    paddingTop: 92,
+    paddingBottom: 72,
+    paddingTop: 72,
     alignItems: "center",
   },
 
@@ -168,12 +225,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontStyle: "normal",
     textAlign: "center",
-    marginBottom: 28,
+    marginBottom: 32,
     color: "#212121",
   },
   textInputeWrapper: {
     // marginTop: 32,
-    marginBottom: 42,
+    marginBottom: 32,
   },
   formInput: {
     height: 50,
@@ -189,6 +246,9 @@ const styles = StyleSheet.create({
     color: "#212121",
 
     paddingLeft: 16,
+  },
+  focused: {
+    borderColor: "#FF6C00",
   },
 
   passwordText: {
