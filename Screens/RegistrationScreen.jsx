@@ -1,4 +1,6 @@
 import { StatusBar } from "expo-status-bar";
+import { useState, useEffect, useCallback } from "react";
+
 import {
   StyleSheet,
   Text,
@@ -9,9 +11,51 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font/build/FontHooks";
+
+const initialState = {
+  email: "",
+  password: "",
+};
+
 export default function RegistrationScreen() {
+  const [dimensions, setdimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
+  const hadleInfo = useCallback(() => {
+    setState(initialState);
+  }, []);
+
+  const [fontsLoader] = useFonts({
+    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setdimensions(width);
+    };
+    const widthAuto = Dimensions.addEventListener("change", onChange);
+    return () => widthAuto?.remove();
+  }, []);
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  if (!fontsLoader) {
+    return null;
+  } else {
+    SplashScreen.hideAsync();
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -30,8 +74,9 @@ export default function RegistrationScreen() {
                   style={styles.addAvatarContainer}
                 ></ImageBackground>
               </View>
-              <Text style={styles.title}>Регистрация</Text>
-              <View style={styles.form}>
+
+              <View style={{ ...styles.form, width: dimensions }}>
+                <Text style={styles.title}>Регистрация</Text>
                 <View style={styles.textInputeWrapper}>
                   <TextInput
                     style={{ ...styles.formInput, marginBottom: 16 }}
@@ -87,10 +132,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingBottom: 78,
+    paddingTop: 92,
+    alignItems: "center",
   },
 
   form: {
-    marginHorizontal: 16,
+    justifyContent: "center",
   },
 
   avatarContainer: {
@@ -121,11 +168,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontStyle: "normal",
     textAlign: "center",
-    marginTop: 92,
+    marginBottom: 28,
     color: "#212121",
   },
   textInputeWrapper: {
-    marginTop: 32,
+    // marginTop: 32,
     marginBottom: 42,
   },
   formInput: {

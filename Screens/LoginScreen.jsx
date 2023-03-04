@@ -70,6 +70,8 @@ export default function LoginScreen() {
             keyboardVerticalOffset={-30}
             style={
               {
+                //   paddingTop: 32,
+                //   marginTop: 200,
                 //   position: "absolute",
                 //   bottom: 0,
                 //   justifyContent: "flex-end",
@@ -80,7 +82,7 @@ export default function LoginScreen() {
             <View style={styles.formContainer}>
               <View style={{ ...styles.form, width: dimensions }}>
                 <Text style={styles.title}>Войти</Text>
-                <View style={styles.textInputeWrapper}>
+                <View style={styles.textInputWrapper}>
                   <TextInput
                     style={{ ...styles.formInput, marginBottom: 16 }}
                     textAlign={"left"}
@@ -138,28 +140,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
   },
   imageBg: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    // alignItems: "center",
   },
   formContainer: {
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingBottom: 144,
+    paddingBottom: 124,
     paddingTop: 32,
     alignItems: "center",
-
-    // justifyContent: "flex-start",
   },
 
   form: {
     justifyContent: "center",
-    // paddingTop: 32,
   },
 
   title: {
@@ -167,11 +164,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontStyle: "normal",
     textAlign: "center",
-    marginBottom: 32,
+    marginBottom: 28,
     // marginTop: 32,
     color: "#212121",
   },
-  textInputeWrapper: {
+  textInputWrapper: {
     // marginTop: 32,
     marginBottom: 42,
   },
@@ -396,6 +393,7 @@ const styles = StyleSheet.create({
 //     backgroundColor: "#FFFFFF",
 //     borderTopLeftRadius: 25,
 //     borderTopRightRadius: 25,
+
 //   },
 //   form: {
 //     marginHorizontal: 16,

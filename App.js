@@ -7,18 +7,11 @@ import LoginScreen from "./Screens/LoginScreen";
 export default function App() {
   return (
     <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen />
+      <RegistrationScreen />
+      {/* <LoginScreen /> */}
       {/* <StatusBar style="auto" /> */}
     </>
   );
-
-  // return (
-  //     <View style={styles.containerMain}>
-  //       <RegistrationScreen />
-  //       <StatusBar style="auto" />
-  //     </View>
-  //   );
 }
 
 // const styles = StyleSheet.create({
