@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 import * as SplashScreen from "expo-splash-screen";
-import { useFonts } from "expo-font/build/FontHooks";
+// import { useFonts } from "expo-font/build/FontHooks";
 
 const initialState = {
   email: "",
@@ -38,9 +38,9 @@ export default function LoginScreen() {
     setState(initialState);
   }, []);
 
-  const [fontsLoader] = useFonts({
-    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
-  });
+  // const [fontsLoader] = useFonts({
+  //   "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+  // });
 
   useEffect(() => {
     const onChange = () => {
@@ -51,18 +51,18 @@ export default function LoginScreen() {
     return () => widthAuto?.remove();
   }, []);
 
-  useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-    }
-    prepare();
-  }, []);
+  // useEffect(() => {
+  //   async function prepare() {
+  //     await SplashScreen.preventAutoHideAsync();
+  //   }
+  //   prepare();
+  // }, []);
 
-  if (!fontsLoader) {
-    return null;
-  } else {
-    SplashScreen.hideAsync();
-  }
+  // if (!fontsLoader) {
+  //   return null;
+  // } else {
+  //   SplashScreen.hideAsync();
+  // }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -76,13 +76,7 @@ export default function LoginScreen() {
             keyboardVerticalOffset={-28}
             style={
               {
-                //   paddingTop: 32,
-                //   marginTop: 200,
-                //   position: "absolute",
-                //   bottom: 0,
-                //   justifyContent: "flex-end",
-                //   alignItems: "center",
-              }
+                
             }
           >
             <View style={styles.formContainer}>
@@ -190,12 +184,10 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     textAlign: "center",
     marginBottom: 32,
-    // marginTop: 32,
-    color: "#212121",
+        color: "#212121",
   },
   textInputWrapper: {
-    // marginTop: 32,
-    marginBottom: 42,
+       marginBottom: 42,
   },
   formInput: {
     height: 50,
