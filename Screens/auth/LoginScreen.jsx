@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import { useState, useEffect, useCallback } from "react";
-
+import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -14,16 +13,17 @@ import {
   Dimensions,
 } from "react-native";
 
-import * as SplashScreen from "expo-splash-screen";
-import { useFonts } from "expo-font/build/FontHooks";
+// import * as SplashScreen from "expo-splash-screen";
+// import { useFonts } from "expo-font/build/FontHooks";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function LoginScreen() {
   const [state, setState] = useState(initialState);
+
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [dimensions, setdimensions] = useState(
@@ -38,10 +38,6 @@ export default function RegistrationScreen() {
     setState(initialState);
   }, []);
 
-  const [fontsLoader] = useFonts({
-    "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
-  });
-
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
@@ -51,18 +47,6 @@ export default function RegistrationScreen() {
     return () => widthAuto?.remove();
   }, []);
 
-  useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-    }
-    prepare();
-  }, []);
-
-  if (!fontsLoader) {
-    return null;
-  } else {
-    SplashScreen.hideAsync();
-  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -72,54 +56,27 @@ export default function RegistrationScreen() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-160}
+            keyboardVerticalOffset={-28}
           >
             <View style={styles.formContainer}>
-              <View style={styles.avatarContainer}>
-                <ImageBackground
-                  source={require("../assets/images/add.png")}
-                  style={styles.addAvatarContainer}
-                ></ImageBackground>
-              </View>
-
               <View style={{ ...styles.form, width: dimensions }}>
-                <Text style={styles.title}>Регистрация</Text>
-                <View style={styles.textInputeWrapper}>
+                <Text style={styles.title}>Войти</Text>
+                <View style={styles.textInputWrapper}>
                   <TextInput
                     style={[
                       {
                         ...styles.formInput,
                         marginBottom: 16,
                       },
-                      isFocused === "login" ? styles.focused : null,
-                    ]}
-                    textAlign={"left"}
-                    placeholder={"Логин"}
-                    placeholderTextColor={"#BDBDBD"}
-                    onFocus={() => setIsFocused("login")}
-                    onBlur={() => setIsFocused(null)}
-                    value={state.login}
-                    onChangeText={(value) =>
-                      setState((prevState) => ({
-                        ...prevState,
-                        login: value,
-                      }))
-                    }
-                  />
-                  <TextInput
-                    style={[
-                      {
-                        ...styles.formInput,
-                        marginBottom: 16,
-                      },
+
                       isFocused === "email" ? styles.focused : null,
                     ]}
                     textAlign={"left"}
                     placeholder={"Адрес электронной почты"}
                     placeholderTextColor={"#BDBDBD"}
+                    value={state.email}
                     onFocus={() => setIsFocused("email")}
                     onBlur={() => setIsFocused(null)}
-                    value={state.email}
                     onChangeText={(value) =>
                       setState((prevState) => ({
                         ...prevState,
@@ -127,6 +84,7 @@ export default function RegistrationScreen() {
                       }))
                     }
                   />
+
                   <View>
                     <TextInput
                       style={[
@@ -136,10 +94,10 @@ export default function RegistrationScreen() {
                       textAlign={"left"}
                       placeholder={"Пароль"}
                       placeholderTextColor={"#BDBDBD"}
+                      value={state.password}
+                      secureTextEntry={!showPassword}
                       onFocus={() => setIsFocused("password")}
                       onBlur={() => setIsFocused(null)}
-                      secureTextEntry={!showPassword}
-                      value={state.password}
                       onChangeText={(value) =>
                         setState((prevState) => ({
                           ...prevState,
@@ -155,20 +113,22 @@ export default function RegistrationScreen() {
                     </Text>
                   </View>
                 </View>
+
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.button}
                   onPress={hadleInfo}
                 >
-                  <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
+                  <Text style={styles.buttonTitle}>Войти</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
+              <Text style={styles.feedBack}>
+                Нет аккаунта? Зарегистрироваться
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
-
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -188,8 +148,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingBottom: 72,
-    paddingTop: 92,
+    paddingBottom: 124,
+    paddingTop: 32,
     alignItems: "center",
   },
 
@@ -197,40 +157,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  avatarContainer: {
-    position: "absolute",
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    alignSelf: "center",
-
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: -60,
-  },
-
-  addAvatarContainer: {
-    position: "absolute",
-    right: -12,
-    bottom: 12,
-
-    width: 25,
-    height: 25,
-    alignSelf: "flex-end",
-  },
-
   title: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 30,
     fontStyle: "normal",
     textAlign: "center",
     marginBottom: 32,
     color: "#212121",
   },
-  textInputeWrapper: {
-    // marginTop: 32,
-    marginBottom: 32,
+  textInputWrapper: {
+    marginBottom: 42,
   },
   formInput: {
     height: 50,
@@ -239,12 +175,13 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
 
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
+    flexGrow: 1,
+    flexShrink: 1,
 
     color: "#212121",
-
     paddingLeft: 16,
   },
   focused: {
@@ -279,7 +216,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   feedBack: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
     textAlign: "center",

@@ -5,31 +5,30 @@ import { useEffect } from "react";
 
 import { View } from "react-native";
 
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
-
-const [fontsLoader] = useFonts({
-  "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
-});
-
-useEffect(() => {
-  async function prepare() {
-    await SplashScreen.preventAutoHideAsync();
-  }
-  prepare();
-}, []);
-
-if (!fontsLoader) {
-  return null;
-} else {
-  SplashScreen.hideAsync();
-}
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
+import LoginScreen from "./Screens/auth/LoginScreen";
 
 export default function App() {
+  const [fontsLoader] = useFonts({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  if (!fontsLoader) {
+    return null;
+  } else {
+    SplashScreen.hideAsync();
+  }
   return (
     <>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
+      {/* <RegistrationScreen /> */}
+      <LoginScreen />
       {/* <StatusBar style="auto" /> */}
     </>
   );
