@@ -72,7 +72,7 @@ export default function RegistrationScreen() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-140}
+            keyboardVerticalOffset={-160}
           >
             <View style={styles.formContainer}>
               <View style={styles.avatarContainer}>
@@ -168,7 +168,7 @@ export default function RegistrationScreen() {
           </KeyboardAvoidingView>
         </ImageBackground>
 
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar style="auto" />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingBottom: 72,
-    paddingTop: 72,
+    paddingTop: 92,
     alignItems: "center",
   },
 
