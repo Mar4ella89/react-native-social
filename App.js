@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font/build/FontHooks";
+import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 import { View } from "react-native";
