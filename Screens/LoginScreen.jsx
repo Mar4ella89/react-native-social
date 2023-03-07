@@ -74,10 +74,6 @@ export default function LoginScreen() {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={-28}
-            style={
-              {
-                
-            }
           >
             <View style={styles.formContainer}>
               <View style={{ ...styles.form, width: dimensions }}>
@@ -184,10 +180,10 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     textAlign: "center",
     marginBottom: 32,
-        color: "#212121",
+    color: "#212121",
   },
   textInputWrapper: {
-       marginBottom: 42,
+    marginBottom: 42,
   },
   formInput: {
     height: 50,

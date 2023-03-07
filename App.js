@@ -8,7 +8,7 @@ import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 
 const [fontsLoader] = useFonts({
-  "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+  "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
 });
 
 useEffect(() => {
