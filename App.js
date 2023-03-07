@@ -7,7 +7,7 @@ import LoginScreen from "./Screens/LoginScreen";
 export default function App() {
   return (
     <>
-      {/* <RegistrationScreen /> */}
+      <RegistrationScreen />
       {/* <LoginScreen /> */}
       {/* <StatusBar style="auto" /> */}
     </>
