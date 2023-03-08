@@ -50,7 +50,7 @@ export default function RegistrationScreen() {
       <View style={styles.container}>
         <ImageBackground
           style={styles.imageBg}
-          source={require("../assets/images/PhotoBG.jpg")}
+          source={require("../../assets/images/PhotoBG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -59,7 +59,7 @@ export default function RegistrationScreen() {
             <View style={styles.formContainer}>
               <View style={styles.avatarContainer}>
                 <ImageBackground
-                  source={require("../assets/images/add.png")}
+                  source={require("../../assets/images/add.png")}
                   style={styles.addAvatarContainer}
                 ></ImageBackground>
               </View>
