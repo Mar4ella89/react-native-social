@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Dimensions,
+  Button,
 } from "react-native";
 
 // import * as SplashScreen from "expo-splash-screen";
@@ -21,7 +22,8 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
+  console.log(navigation);
   const [state, setState] = useState(initialState);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -122,13 +124,18 @@ export default function LoginScreen() {
                   <Text style={styles.buttonTitle}>Войти</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.feedBack}>
-                Нет аккаунта? Зарегистрироваться
-              </Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("Registration")}
+              >
+                <Text style={styles.feedBack}>
+                  Нет аккаунта? Зарегистрироваться
+                </Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar style="auto" />
       </View>
     </TouchableWithoutFeedback>
   );

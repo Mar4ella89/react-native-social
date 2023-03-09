@@ -20,7 +20,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -54,7 +54,7 @@ export default function RegistrationScreen() {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={-160}
+            keyboardVerticalOffset={-100}
           >
             <View style={styles.formContainer}>
               <View style={styles.avatarContainer}>
@@ -145,7 +145,12 @@ export default function RegistrationScreen() {
                   <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={styles.feedBack}>Уже есть аккаунт? Войти</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
