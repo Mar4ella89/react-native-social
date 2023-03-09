@@ -2,11 +2,15 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font/build/FontHooks";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import { View } from "react-native";
 
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
   const [fontsLoader] = useFonts({
@@ -26,10 +30,11 @@ export default function App() {
     SplashScreen.hideAsync();
   }
   return (
-    <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen />
-      {/* <StatusBar style="auto" /> */}
-    </>
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen name="Registration" component={RegistrationScreen} />
+        <AuthStack.Screen name="Login" component={LoginScreen} />
+      </AuthStack.Navigator>
+    </NavigationContainer>
   );
 }
