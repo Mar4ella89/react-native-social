@@ -11,6 +11,9 @@ import { View } from "react-native";
 
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
+import PostsScreen from "./Screens/mainScreen/PostsScreen";
+import CreatePostsScreen from "./Screens/mainScreen/CreatePostsScreen";
+import ProfileScreen from "./Screens/mainScreen/ProfileScreen";
 
 const AuthStack = createStackNavigator();
 const MaimTab = createBottomTabNavigator();
@@ -34,7 +37,15 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <AuthStack.Navigator initialRouteName="Login">
+      <MaimTab.Navigator>
+        <MaimTab.Screen name="PostsScreen" component={PostsScreen} />
+        <MaimTab.Screen
+          name="CreatePostsScreen"
+          component={CreatePostsScreen}
+        />
+        <MaimTab.Screen name="ProfileScreen" component={ProfileScreen} />
+      </MaimTab.Navigator>
+      {/* <AuthStack.Navigator initialRouteName="Login">
         <AuthStack.Screen
           options={{ headerShown: false }}
           name="Login"
@@ -45,7 +56,7 @@ export default function App() {
           name="Registration"
           component={RegistrationScreen}
         />
-      </AuthStack.Navigator>
+      </AuthStack.Navigator> */}
     </NavigationContainer>
   );
 }
