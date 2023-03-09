@@ -18,7 +18,35 @@ import ProfileScreen from "./Screens/mainScreen/ProfileScreen";
 const AuthStack = createStackNavigator();
 const MaimTab = createBottomTabNavigator();
 
+const useRoute = (isAuth) => {
+  if (!isAuth) {
+    return (
+      <AuthStack.Navigator initialRouteName="Login">
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Registration"
+          component={RegistrationScreen}
+        />
+      </AuthStack.Navigator>
+    );
+  }
+  return (
+    <MaimTab.Navigator>
+      <MaimTab.Screen name="PostsScreen" component={PostsScreen} />
+      <MaimTab.Screen name="CreatePostsScreen" component={CreatePostsScreen} />
+      <MaimTab.Screen name="ProfileScreen" component={ProfileScreen} />
+    </MaimTab.Navigator>
+  );
+};
+
 export default function App() {
+  const routing = useRoute(true);
+
   const [fontsLoader] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
   });
@@ -35,28 +63,5 @@ export default function App() {
   } else {
     SplashScreen.hideAsync();
   }
-  return (
-    <NavigationContainer>
-      <MaimTab.Navigator>
-        <MaimTab.Screen name="PostsScreen" component={PostsScreen} />
-        <MaimTab.Screen
-          name="CreatePostsScreen"
-          component={CreatePostsScreen}
-        />
-        <MaimTab.Screen name="ProfileScreen" component={ProfileScreen} />
-      </MaimTab.Navigator>
-      {/* <AuthStack.Navigator initialRouteName="Login">
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Registration"
-          component={RegistrationScreen}
-        />
-      </AuthStack.Navigator> */}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{routing}</NavigationContainer>;
 }
