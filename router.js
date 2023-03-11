@@ -35,28 +35,54 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+    <MainTab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+          null,
+        ],
+        tabBarActiveTintColor: "#ffffff",
+        tabBarActiveBackgroundColor: "#FF6C00",
+        tabBarInactiveTintColor: "#212121",
+
+        tabBarItemStyle: {
+          borderRadius: 20,
+          marginTop: 4,
+          marginBottom: 4,
+          maxWidth: 70,
+          margin: 8,
+        },
+      }}
+    >
       <MainTab.Screen
-        options={{
-          tabBarIcon: () => <Grid width={24} height={24} fill={"#fff"} />,
-        }}
         name="PostsScreen"
         component={PostsScreen}
+        options={{
+          tabBarIcon: () => <Grid width={24} height={24} />,
+
+          title: "Публикации",
+        }}
       />
 
       <MainTab.Screen
-        options={{
-          tabBarIcon: () => <Union width={24} height={24} fill={"#fff"} />,
-        }}
         name="CreatePostsScreen"
         component={CreatePostsScreen}
+        options={{
+          tabBarIcon: () => <Union width={14} height={14} />,
+          title: "Создать публикацию",
+        }}
       />
       <MainTab.Screen
-        options={{
-          tabBarIcon: () => <User width={24} height={24} fill={"#fff"} />,
-        }}
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{
+          tabBarIcon: () => <User width={24} height={24} />,
+          headerShown: false,
+        }}
       />
     </MainTab.Navigator>
   );
