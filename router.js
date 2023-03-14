@@ -17,9 +17,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 
-import User from "./assets/user.svg";
-import Union from "./assets/Union.svg";
-import Grid from "./assets/grid.svg";
+// import User from "./assets/user.svg";
+// import Union from "./assets/Union.svg";
+// import Grid from "./assets/grid.svg";
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
