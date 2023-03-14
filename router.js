@@ -12,6 +12,7 @@ import LoginScreen from "./Screens/auth/LoginScreen";
 import PostsScreen from "./Screens/mainScreen/PostsScreen";
 import CreatePostsScreen from "./Screens/mainScreen/CreatePostsScreen";
 import ProfileScreen from "./Screens/mainScreen/ProfileScreen";
+import BtnLogout from "./Components/BtnLogout";
 
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -75,6 +76,7 @@ export const useRoute = (isAuth) => {
             );
           },
           title: "Публикации",
+          headerRight: () => <BtnLogout />,
         }}
       />
 
@@ -92,6 +94,7 @@ export const useRoute = (isAuth) => {
           tabBarIcon: ({ focused, color, size }) => {
             return <Feather name="user" size={24} color={color} />;
           },
+          headerRight: () => <BtnLogout />,
         }}
         name="ProfileScreen"
         component={ProfileScreen}
