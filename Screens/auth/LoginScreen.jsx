@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Dimensions,
-  Button,
 } from "react-native";
 
 // import * as SplashScreen from "expo-splash-screen";
@@ -23,7 +22,6 @@ const initialState = {
 };
 
 export default function LoginScreen({ navigation }) {
-  console.log(navigation);
   const [state, setState] = useState(initialState);
 
   const [showPassword, setShowPassword] = useState(false);
