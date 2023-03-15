@@ -21,7 +21,7 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const sendFoto = () => {
-    navigation.navigate("PostsScreen");
+    navigation.navigate("PostsScreen", { photo });
   };
 
   if (!isCamera) {
