@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 
-const CreatePostsScreen = () => {
+const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
   const [isCamera, setIsCamera] = useState(false);
@@ -18,6 +18,10 @@ const CreatePostsScreen = () => {
   const takePhoto = async () => {
     const currentPhoto = await camera.takePictureAsync();
     setPhoto(currentPhoto.uri);
+  };
+
+  const sendFoto = () => {
+    navigation.navigate("PostsScreen");
   };
 
   if (!isCamera) {
@@ -162,9 +166,11 @@ const CreatePostsScreen = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.button}
-          onPress={() => {
-            setIsCamera(false);
-          }}
+          onPress={sendFoto}
+          // () => {
+          // setIsCamera(false);
+
+          // }};
         >
           <Text style={styles.buttonTitle}>Опубликовать</Text>
         </TouchableOpacity>
@@ -220,17 +226,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   takePhotoContainer: {
+    // flex: 1,
     position: "absolute",
-    top: 10,
-    left: 10,
-    borderColor: "#FFF",
-    borderWidth: 1,
-    borderRadius: 10,
+    top: 0,
+    left: 0,
+    // borderColor: "#FFF",
+    // borderWidth: 1,
+    // borderRadius: 10,
+    width: "100%",
+    height: "100%",
   },
   takePhotoImg: {
-    height: 200,
-    width: 200,
-    borderRadius: 10,
+    flex: 1,
+    // height: "100%",
+    // height: 200,
+    // width: 200,
+    // maxWidth: "100%",
+    // borderRadius: 10,
   },
   textInputWrapper: { marginTop: 8 },
   title: {
