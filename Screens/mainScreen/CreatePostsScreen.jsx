@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  TextInput,
 } from "react-native";
 import { Camera } from "expo-camera";
 
@@ -18,6 +19,83 @@ const CreatePostsScreen = () => {
     const currentPhoto = await camera.takePictureAsync();
     setPhoto(currentPhoto.uri);
   };
+
+  if (!isCamera) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.addContainer}>
+          <View style={styles.photoContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsCamera(true);
+              }}
+            >
+              <Image
+                source={require("../../assets/images/camera_add.png")}
+                style={styles.addPhotoImg}
+              ></Image>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.textInputWrapper}>
+            <Text style={styles.title}>Загрузить фото</Text>
+            <TextInput
+              style={[
+                {
+                  ...styles.formInput,
+                  marginTop: 32,
+                },
+
+                // isFocused === "email" ? styles.focused : null,
+              ]}
+              textAlign={"left"}
+              placeholder={"Название..."}
+              placeholderTextColor={"#BDBDBD"}
+              // value={state.email}
+              // onFocus={() => setIsFocused("email")}
+              // onBlur={() => setIsFocused(null)}
+              // onChangeText={(value) =>
+              //   setState((prevState) => ({
+              //     ...prevState,
+              //     email: value,
+              //   }))
+              // }
+            />
+            <TextInput
+              style={[
+                {
+                  ...styles.formInput,
+                  marginTop: 16,
+                },
+
+                // isFocused === "email" ? styles.focused : null,
+              ]}
+              textAlign={"left"}
+              placeholder={"Местность..."}
+              placeholderTextColor={"#BDBDBD"}
+              // value={state.email}
+              // onFocus={() => setIsFocused("email")}
+              // onBlur={() => setIsFocused(null)}
+              // onChangeText={(value) =>
+              //   setState((prevState) => ({
+              //     ...prevState,
+              //     email: value,
+              //   }))
+              // }
+            />
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.button}
+            onPress={() => {}}
+          >
+            <Text style={styles.buttonTitle}>Опубликовать</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -33,20 +111,61 @@ const CreatePostsScreen = () => {
             <Text style={styles.snapText}>SNAP</Text>
           </TouchableOpacity>
         </Camera>
-        <View style={styles.photoContainer}>
-          <TouchableOpacity
-            style={styles.snapContainer}
-            onPress={() => {
-              setIsCamera(true);
-            }}
-          >
-            <Image
-              source={require("../../assets/images/camera_add.png")}
-              style={styles.addPhotoImg}
-            ></Image>
-          </TouchableOpacity>
+        <View style={styles.textInputWrapper}>
+          <Text style={styles.title}>Загрузить фото</Text>
+          <TextInput
+            style={[
+              {
+                ...styles.formInput,
+                marginTop: 32,
+              },
+
+              // isFocused === "email" ? styles.focused : null,
+            ]}
+            textAlign={"left"}
+            placeholder={"Название..."}
+            placeholderTextColor={"#BDBDBD"}
+            // value={state.email}
+            // onFocus={() => setIsFocused("email")}
+            // onBlur={() => setIsFocused(null)}
+            // onChangeText={(value) =>
+            //   setState((prevState) => ({
+            //     ...prevState,
+            //     email: value,
+            //   }))
+            // }
+          />
+          <TextInput
+            style={[
+              {
+                ...styles.formInput,
+                marginTop: 16,
+              },
+
+              // isFocused === "email" ? styles.focused : null,
+            ]}
+            textAlign={"left"}
+            placeholder={"Местность..."}
+            placeholderTextColor={"#BDBDBD"}
+            // value={state.email}
+            // onFocus={() => setIsFocused("email")}
+            // onBlur={() => setIsFocused(null)}
+            // onChangeText={(value) =>
+            //   setState((prevState) => ({
+            //     ...prevState,
+            //     email: value,
+            //   }))
+            // }
+          />
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.button}
+          onPress={() => {
+            setIsCamera(false);
+          }}
+        >
           <Text style={styles.buttonTitle}>Опубликовать</Text>
         </TouchableOpacity>
       </View>
@@ -60,13 +179,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // color: "#000",
+    color: "#000",
   },
   addContainer: {
     marginHorizontal: 16,
   },
   photoContainer: {
-    height: "45%",
+    height: "40%",
+    marginTop: 32,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F6F6F6",
@@ -74,22 +194,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#F6F6F6",
   },
-  addPhotoContainer: {
-    width: 100,
-    height: 100,
-    borderWidth: 1,
-    borderColor: "#000000",
-  },
+
   addPhotoImg: {
     width: 60,
     height: 60,
   },
   camera: {
-    height: "45%",
+    height: "40%",
+    marginTop: 32,
     justifyContent: "flex-end",
     alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 8,
   },
   snapText: {
     color: "#FFFFFF",
@@ -117,11 +232,36 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 10,
   },
+  textInputWrapper: { marginTop: 8 },
+  title: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    color: "#BDBDBD",
+    paddingBottom: 16,
+  },
+  formInput: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderColor: "#E8E8E8",
+    color: "#212121",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+  },
   button: {
+    marginTop: 32,
     backgroundColor: "#FF6C00",
     height: 51,
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
+  },
+  buttonTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    lineHeight: 19,
+    color: "#FFFFFF",
   },
 });

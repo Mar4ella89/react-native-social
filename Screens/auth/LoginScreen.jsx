@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     right: 16,
     top: 14,
 
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
 
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonTitle: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
     lineHeight: 19,
