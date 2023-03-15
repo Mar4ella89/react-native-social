@@ -85,6 +85,7 @@ export const useRoute = (isAuth) => {
           tabBarIcon: ({ focused, color, size }) => {
             return <AntDesign name="plus" size={24} color={color} />;
           },
+          title: "Создать публикацию",
         }}
         name="CreatePostsScreen"
         component={CreatePostsScreen}
@@ -94,6 +95,7 @@ export const useRoute = (isAuth) => {
           tabBarIcon: ({ focused, color, size }) => {
             return <Feather name="user" size={24} color={color} />;
           },
+
           headerRight: () => <BtnLogout />,
         }}
         name="ProfileScreen"
