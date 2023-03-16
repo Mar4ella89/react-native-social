@@ -42,11 +42,13 @@ export const useRoute = (isAuth) => {
   return (
     <MainTab.Navigator
       screenOptions={{
-        showLabel: false,
+        showLabel: true,
         tabBarShowLabel: false,
         tabBarStyle: [
           {
             display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           },
           null,
         ],
@@ -60,10 +62,7 @@ export const useRoute = (isAuth) => {
           maxWidth: 70,
           margin: 8,
         },
-        tabBarStyle: {
-          justifyContent: "space-between",
-          alignItems: "center",
-        },
+        headerTitleAlign: "center",
       }}
     >
       <MainTab.Screen
@@ -95,7 +94,7 @@ export const useRoute = (isAuth) => {
           tabBarIcon: ({ focused, color, size }) => {
             return <Feather name="user" size={24} color={color} />;
           },
-
+          title: "Профиль",
           headerRight: () => <BtnLogout />,
         }}
         name="ProfileScreen"

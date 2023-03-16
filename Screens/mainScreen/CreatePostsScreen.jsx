@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,11 +9,29 @@ import {
   TextInput,
 } from "react-native";
 import { Camera } from "expo-camera";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
   const [isCamera, setIsCamera] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      await Camera.requestCameraPermissionsAsync();
+
+      let { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        setErrorMsg("В доступе местонахождения отказано");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync();
+      setLocation(location);
+    })();
+  }, []);
 
   const takePhoto = async () => {
     const currentPhoto = await camera.takePictureAsync();
@@ -22,6 +40,8 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const sendFoto = () => {
     navigation.navigate("PostsScreen", { photo });
+    setIsCamera(false);
+    setPhoto("");
   };
 
   if (!isCamera) {
@@ -112,7 +132,11 @@ const CreatePostsScreen = ({ navigation }) => {
           )}
 
           <TouchableOpacity style={styles.snapContainer} onPress={takePhoto}>
-            <Text style={styles.snapText}>SNAP</Text>
+            {/* <Text style={styles.snapText}>SNAP</Text> */}
+            <Image
+              source={require("../../assets/images/camera_r.png")}
+              style={styles.snapText}
+            ></Image>
           </TouchableOpacity>
         </Camera>
         <View style={styles.textInputWrapper}>
