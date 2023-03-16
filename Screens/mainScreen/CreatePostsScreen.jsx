@@ -13,6 +13,8 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 const CreatePostsScreen = ({ navigation }) => {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
   const [isCamera, setIsCamera] = useState(false);
@@ -36,6 +38,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const takePhoto = async () => {
     const currentPhoto = await camera.takePictureAsync();
     setPhoto(currentPhoto.uri);
+    console.log(location);
   };
 
   const sendFoto = () => {
@@ -43,6 +46,15 @@ const CreatePostsScreen = ({ navigation }) => {
     setIsCamera(false);
     setPhoto("");
   };
+
+  // const textLocation = "Waiting..";
+  // if (errorMsg) {
+  //   textLocation = errorMsg;
+  // } else if (location) {
+  //   textLocation = JSON.stringify(location);
+  // }
+
+  // console.log(textLocation);
 
   if (!isCamera) {
     return (
@@ -175,7 +187,7 @@ const CreatePostsScreen = ({ navigation }) => {
             textAlign={"left"}
             placeholder={"Местность..."}
             placeholderTextColor={"#BDBDBD"}
-            // value={state.email}
+            // value={textLocation}
             // onFocus={() => setIsFocused("email")}
             // onBlur={() => setIsFocused(null)}
             // onChangeText={(value) =>

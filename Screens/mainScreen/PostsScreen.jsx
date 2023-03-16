@@ -37,16 +37,8 @@ const styles = StyleSheet.create({
   postContainer: {
     marginHorizontal: 16,
     marginTop: 32,
-    // borderWidth: 1,
-    // borderColor: "blue",
-    // height: 200,
-    // width: 200,
   },
   postImg: {
     height: 240,
-    // width: 200,
-    // backgroundColor: "blue",
-    // borderWidth: 1,
-    // borderColor: "blue",
   },
 });
