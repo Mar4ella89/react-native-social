@@ -36,16 +36,6 @@ export const useRoute = (isAuth) => {
           name="Registration"
           component={RegistrationScreen}
         />
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Location"
-          component={MapScreen}
-        />
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Comments"
-          component={CommentsScreen}
-        />
       </AuthStack.Navigator>
     );
   }

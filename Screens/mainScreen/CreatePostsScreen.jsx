@@ -12,6 +12,8 @@ import { Camera } from "expo-camera";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
+import { Feather } from "@expo/vector-icons";
+
 const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -30,7 +32,7 @@ const CreatePostsScreen = ({ navigation }) => {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync();
+      let location = await Location.getCurrentPositionAsync();
       setLocation(location);
     })();
   }, []);
@@ -42,19 +44,10 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const sendFoto = () => {
-    navigation.navigate("PostsScreen", { photo });
+    navigation.navigate("DefaultScreenPosts", { photo });
     setIsCamera(false);
     setPhoto("");
   };
-
-  // const textLocation = "Waiting..";
-  // if (errorMsg) {
-  //   textLocation = errorMsg;
-  // } else if (location) {
-  //   textLocation = JSON.stringify(location);
-  // }
-
-  // console.log(textLocation);
 
   if (!isCamera) {
     return (
@@ -97,28 +90,36 @@ const CreatePostsScreen = ({ navigation }) => {
               //   }))
               // }
             />
-            <TextInput
-              style={[
-                {
-                  ...styles.formInput,
-                  marginTop: 16,
-                },
+            <View style={styles.inputMapWrapper}>
+              <Feather
+                name="map-pin"
+                size={18}
+                color="#BDBDBD"
+                style={styles.mapIcon}
+              />
+              <TextInput
+                style={[
+                  {
+                    ...styles.formInputMap,
+                    marginTop: 16,
+                  },
 
-                // isFocused === "email" ? styles.focused : null,
-              ]}
-              textAlign={"left"}
-              placeholder={"Местность..."}
-              placeholderTextColor={"#BDBDBD"}
-              // value={state.email}
-              // onFocus={() => setIsFocused("email")}
-              // onBlur={() => setIsFocused(null)}
-              // onChangeText={(value) =>
-              //   setState((prevState) => ({
-              //     ...prevState,
-              //     email: value,
-              //   }))
-              // }
-            />
+                  // isFocused === "email" ? styles.focused : null,
+                ]}
+                textAlign={"left"}
+                placeholder={"Местность..."}
+                placeholderTextColor={"#BDBDBD"}
+                // value={state.email}
+                // onFocus={() => setIsFocused("email")}
+                // onBlur={() => setIsFocused(null)}
+                // onChangeText={(value) =>
+                //   setState((prevState) => ({
+                //     ...prevState,
+                //     email: value,
+                //   }))
+                // }
+              />
+            </View>
           </View>
 
           <TouchableOpacity
@@ -144,7 +145,6 @@ const CreatePostsScreen = ({ navigation }) => {
           )}
 
           <TouchableOpacity style={styles.snapContainer} onPress={takePhoto}>
-            {/* <Text style={styles.snapText}>SNAP</Text> */}
             <Image
               source={require("../../assets/images/camera_r.png")}
               style={styles.snapText}
@@ -175,28 +175,36 @@ const CreatePostsScreen = ({ navigation }) => {
             //   }))
             // }
           />
-          <TextInput
-            style={[
-              {
-                ...styles.formInput,
-                marginTop: 16,
-              },
+          <View style={styles.inputMapWrapper}>
+            <Feather
+              name="map-pin"
+              size={18}
+              color="#BDBDBD"
+              style={styles.mapIcon}
+            />
+            <TextInput
+              style={[
+                {
+                  ...styles.formInputMap,
+                  marginTop: 16,
+                },
 
-              // isFocused === "email" ? styles.focused : null,
-            ]}
-            textAlign={"left"}
-            placeholder={"Местность..."}
-            placeholderTextColor={"#BDBDBD"}
-            // value={textLocation}
-            // onFocus={() => setIsFocused("email")}
-            // onBlur={() => setIsFocused(null)}
-            // onChangeText={(value) =>
-            //   setState((prevState) => ({
-            //     ...prevState,
-            //     email: value,
-            //   }))
-            // }
-          />
+                // isFocused === "email" ? styles.focused : null,
+              ]}
+              textAlign={"left"}
+              placeholder={"Местность..."}
+              placeholderTextColor={"#BDBDBD"}
+              // value={textLocation}
+              // onFocus={() => setIsFocused("email")}
+              // onBlur={() => setIsFocused(null)}
+              // onChangeText={(value) =>
+              //   setState((prevState) => ({
+              //     ...prevState,
+              //     email: value,
+              //   }))
+              // }
+            />
+          </View>
         </View>
 
         <TouchableOpacity
@@ -296,6 +304,23 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     fontStyle: "normal",
+  },
+  formInputMap: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderColor: "#E8E8E8",
+    color: "#212121",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    paddingLeft: 20,
+  },
+  inputMapWrapper: {
+    position: "relative",
+  },
+  mapIcon: {
+    position: "absolute",
+    top: 30,
   },
   button: {
     marginTop: 32,

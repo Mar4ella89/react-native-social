@@ -7,7 +7,7 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <MapView
-        style={{ flex: 1 }}
+        style={styles.map}
         initialRegion={{
           latitude: 50.516339,
           longitude: 30.602185,
@@ -17,7 +17,7 @@ const MapScreen = () => {
       >
         <Marker
           coordinate={{ latitude: 50.516339, longitude: 30.602185 }}
-          title="travel photo"
+          title="I was here"
         />
       </MapView>
     </View>
@@ -26,6 +26,9 @@ const MapScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  map: {
     flex: 1,
   },
 });
