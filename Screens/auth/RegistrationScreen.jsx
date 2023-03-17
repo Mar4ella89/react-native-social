@@ -14,6 +14,10 @@ import {
   Dimensions,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+
+import { authSignUpUser } from "../../redux/auth/authOperation";
+
 const initialState = {
   login: "",
   email: "",
@@ -24,17 +28,21 @@ export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
   const [dimensions, setdimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
+
+  const dispatch = useDispatch();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const hadleInfo = useCallback(() => {
+  const hadleSubmit = () => {
+    dispatch(authSignUpUser(state));
     setState(initialState);
-  }, []);
+  };
 
   useEffect(() => {
     const onChange = () => {
@@ -140,7 +148,7 @@ export default function RegistrationScreen({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.button}
-                  onPress={hadleInfo}
+                  onPress={hadleSubmit}
                 >
                   <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>
