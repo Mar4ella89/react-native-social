@@ -42,35 +42,6 @@ export const authSignUpUser = ({ login, email, password }) => {
   };
 };
 
-// export const authSignUpUser = ({ login, email, password }) => {
-//   async (dispatch, getState) => {
-//     const state = getState();
-//     try {
-//       await createUserWithEmailAndPassword(auth, email, password);
-//       await updateProfile(auth.currentUser, {
-//         displayName: login,
-//         photoURL: state.auth.photoURL,
-//       });
-//       const { uid, displayName, photoURL } = auth.currentUser;
-//       dispatch(
-//         updateUserProfile({
-//           userId: uid,
-//           nickname: displayName,
-//           photoURL: photoURL,
-//           email,
-//         })
-//       );
-//     } catch (error) {
-//       console.log(error);
-//       console.log(error.message);
-//       dispatch(
-//         authSlice.actions.showError({
-//           error: error.message,
-//         })
-//       );
-//     }
-//   };
-// };
 export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
@@ -88,7 +59,16 @@ export const authSignInUser =
       console.log(error.message);
     }
   };
-export const authSignOutUser = () => async (dispatch, getState) => {};
+export const authSignOutUser = () => async (dispatch, getState) => {
+  try {
+    await signOut(auth);
+    dispatch(authSignOut());
+    console.log("User signed out successfully");
+  } catch (error) {
+    console.log(error);
+    console.log(error.message);
+  }
+};
 
 export const authStateChangeUser = () => async (dispatch, getState) => {
   onAuthStateChanged(auth, (user) => {

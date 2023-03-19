@@ -1,20 +1,31 @@
-import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
-import { useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useEffect, useState } from "react";
 
 export const useFont = () => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
     async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-      await Font.loadAsync({
-        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
-      });
-      setFontsLoaded(true);
+      try {
+        await Font.loadAsync({
+          "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setAppIsReady(true);
+      }
     }
+
     prepare();
   }, []);
 
-  return fontsLoaded;
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  return { appIsReady, onLayoutRootView };
 };
