@@ -1,37 +1,28 @@
-import { StatusBar } from "expo-status-bar";
-import { useFonts } from "expo-font/build/FontHooks";
+// import { StatusBar } from "expo-status-bar";
+
 import * as SplashScreen from "expo-splash-screen";
 
 import { Provider } from "react-redux";
-import { useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from "react";
 
-import { useRoute } from "./router";
+import Main from "./Components/Main";
+
+import { useFont } from "./hooks/useFont";
 
 import { store } from "./redux/store";
 
 export default function App() {
-  const routing = useRoute(false);
-
-  const [fontsLoader] = useFonts({
-    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
-  });
+  const fontsLoaded = useFont();
 
   useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
     }
-    prepare();
-  }, []);
+  }, [fontsLoaded]);
 
-  if (!fontsLoader) {
-    return null;
-  } else {
-    SplashScreen.hideAsync();
-  }
   return (
     <Provider store={store}>
-      <NavigationContainer>{routing}</NavigationContainer>
+      <Main />
     </Provider>
   );
 }

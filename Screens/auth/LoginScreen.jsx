@@ -13,8 +13,9 @@ import {
   Dimensions,
 } from "react-native";
 
-// import * as SplashScreen from "expo-splash-screen";
-// import { useFonts } from "expo-font/build/FontHooks";
+import { useDispatch } from "react-redux";
+
+import { authSignInUser } from "../../redux/auth/authOperation";
 
 const initialState = {
   email: "",
@@ -30,13 +31,16 @@ export default function LoginScreen({ navigation }) {
     Dimensions.get("window").width - 16 * 2
   );
 
+  const dispatch = useDispatch();
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const hadleInfo = useCallback(() => {
+  const hadleSubmit = () => {
+    dispatch(authSignInUser(state));
     setState(initialState);
-  }, []);
+  };
 
   useEffect(() => {
     const onChange = () => {
@@ -117,7 +121,7 @@ export default function LoginScreen({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.button}
-                  onPress={hadleInfo}
+                  onPress={hadleSubmit}
                 >
                   <Text style={styles.buttonTitle}>Войти</Text>
                 </TouchableOpacity>

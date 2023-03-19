@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import {
   StyleSheet,
@@ -13,6 +14,7 @@ import { EvilIcons } from "@expo/vector-icons";
 
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
+  const { userId } = useSelector((state) => state.auth);
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
