@@ -55,15 +55,31 @@ const DefaultScreenPosts = ({ route, navigation }) => {
     //   setPosts([...posts, { ...doc.data(), id: doc.id }]);
     // });
 
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+      setPosts((prevPosts) => [...prevPosts, { ...doc.data(), id: doc.id }]);
+    });
+
     // ---------------rezult ok (work)--------------
 
-    // querySnapshot.forEach((doc) => {
-    //   console.log(doc.data());
-    //   setPosts([...posts, { ...doc.data(), id: doc.id }]);
-    // });
+    // setPosts(
+    //   querySnapshot.forEach(
+    //     (doc) => ({ ...doc.data(), id: doc.id })
+    // console.log(doc.data());
+    // setPosts([...posts, { ...doc.data(), id: doc.id }]);
+    // setPosts([...posts, ...doc.data()])
+    //   )
+    // );
+    // setPosts([
+    //   ...posts,
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.id, " => ", doc.data());
+    //     ({ ...doc.data(), id: doc.id });
+    //   }),
+    // ]);
 
     // ---------------rezult ok--------------
-    setPosts(querySnapshot.map((doc) => ({ ...doc.data(), id: doc.id })));
+    // setPosts(querySnapshot.map((doc) => ({ ...doc.data(), id: doc.id })));
     // querySnapshot.map((doc) => {
     //   console.log(doc.data());
     //   setPosts((prevPost) => [...prevPost, { ...doc.data(), id: doc.id }]);
