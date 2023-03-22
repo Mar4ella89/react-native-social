@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from "react";
+import firebase from "firebase/app";
 import {
-  StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
+  Text,
   TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
 } from "react-native";
-import { Camera } from "expo-camera";
-import MapView, { Marker } from "react-native-maps";
+import { Camera, CameraType } from "expo-camera";
+
 import * as Location from "expo-location";
+import { getDownloadURL, uploadBytes, ref } from "firebase/storage";
+import { useSelector } from "react-redux";
+import { collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { storage } from "../../fireBase/config";
+import { db } from "../../fireBase/config";
+
+// import db from "../../fireBase/config";
 
 import { Feather } from "@expo/vector-icons";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
+  const [comment, setComment] = useState("");
   const [isCamera, setIsCamera] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
+
+  const { userId, nickname } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -38,16 +49,97 @@ const CreatePostsScreen = ({ navigation }) => {
   }, []);
 
   const takePhoto = async () => {
-    const currentPhoto = await camera.takePictureAsync();
-    setPhoto(currentPhoto.uri);
-    console.log(location);
+    const { uri } = await camera.takePictureAsync();
+    setPhoto(uri);
+    console.log("location", location);
   };
 
-  const sendFoto = () => {
-    navigation.navigate("DefaultScreenPosts", { photo });
+  const handleCameraReady = () => {
+    setCameraReady(true);
+  };
+
+  const sendPhoto = () => {
+    uploadPostToServer();
+
+    navigation.navigate("DefaultScreenPosts");
+    // navigation.navigate("DefaultScreenPosts", { photo, location });
     setIsCamera(false);
     setPhoto("");
   };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    // const createPost = await db
+    //   .initializeApp(firebaseConfig)
+    //   .firestore()
+    //   .collection("posts")
+    //   .add({ photo, comment, location: location.coords, userId, nickname });
+
+    try {
+      const db = getFirestore();
+      // console.log(db);
+      const newCollectionRef = collection(db, "posts");
+      await addDoc(newCollectionRef, {
+        // photo,
+        // comment,
+        // location: location.coords,
+        // userId,
+        // nickname,
+        userId: userId,
+        photo: photo,
+        comment: comment,
+        location: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+        // created: firebase.firestore.FieldValue.serverTimestamp(),
+        nickname: nickname,
+      });
+      console.log(`Коллекция создана!`);
+      // return serverData;
+    } catch (error) {
+      console.error("Ошибка создания коллекции:", error);
+    }
+  };
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+      const uniquePostId = Date.now().toString();
+
+      const data = ref(storage, `postimage/${uniquePostId}`);
+      await uploadBytes(data, file);
+
+      const processedPhoto = await getDownloadURL(data);
+      return processedPhoto;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`errorCode: ${errorCode}, errorMessage: ${errorMessage}`);
+    }
+  };
+
+  // const uploadPostToServer = async () => {
+  //   const photo = await uploadPhotoToServer();
+  //   const createPost = await db
+  //     .firestore()
+  //     .collection("posts")
+  //     .add({ photo, comment, location: location.coords, userId, nickname });
+  // };
+
+  // const uploadPhotoToServer = async () => {
+  //   const response = await fetch(photo);
+  //   const file = await response.blob();
+  //   const uniquePostId = Date.now().toString();
+  //   await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+  //   const processedPhoto = await db
+  //     .storage()
+  //     .ref("postImage")
+  //     .child(uniquePostId)
+  //     .getDownloadURL();
+  //   return processedPhoto;
+  // };
 
   if (!isCamera) {
     return (
@@ -125,7 +217,7 @@ const CreatePostsScreen = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.button}
-            onPress={() => {}}
+            onPress={sendPhoto}
           >
             <Text style={styles.buttonTitle}>Опубликовать</Text>
           </TouchableOpacity>
@@ -137,7 +229,11 @@ const CreatePostsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.addContainer}>
-        <Camera style={styles.camera} ref={setCamera}>
+        <Camera
+          style={styles.camera}
+          ref={setCamera}
+          onCameraReady={handleCameraReady}
+        >
           {photo && (
             <View style={styles.takePhotoContainer}>
               <Image source={{ uri: photo }} style={styles.takePhotoImg} />
@@ -165,6 +261,7 @@ const CreatePostsScreen = ({ navigation }) => {
             textAlign={"left"}
             placeholder={"Название..."}
             placeholderTextColor={"#BDBDBD"}
+            onChangeText={setComment}
             // value={state.email}
             // onFocus={() => setIsFocused("email")}
             // onBlur={() => setIsFocused(null)}
@@ -210,7 +307,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.button}
-          onPress={sendFoto}
+          onPress={sendPhoto}
           // () => {
           // setIsCamera(false);
 
