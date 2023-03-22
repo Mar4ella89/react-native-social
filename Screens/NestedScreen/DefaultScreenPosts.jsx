@@ -48,13 +48,26 @@ const DefaultScreenPosts = ({ route, navigation }) => {
     //   // setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     // });
 
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data());
-      setPosts((prevPost) => [...prevPost, doc.data()]);
-      console.log("posts", posts);
-    });
+    // ---------------rezult ok (work)--------------
 
-    console.log("posts", posts);
+    // querySnapshot.forEach((doc) => {
+    //   console.log(doc.data());
+    //   setPosts([...posts, { ...doc.data(), id: doc.id }]);
+    // });
+
+    // ---------------rezult ok (work)--------------
+
+    // querySnapshot.forEach((doc) => {
+    //   console.log(doc.data());
+    //   setPosts([...posts, { ...doc.data(), id: doc.id }]);
+    // });
+
+    // ---------------rezult ok--------------
+    setPosts(querySnapshot.map((doc) => ({ ...doc.data(), id: doc.id })));
+    // querySnapshot.map((doc) => {
+    //   console.log(doc.data());
+    //   setPosts((prevPost) => [...prevPost, { ...doc.data(), id: doc.id }]);
+    // });
   };
 
   // const getAllPost = async () => {
@@ -108,7 +121,6 @@ const DefaultScreenPosts = ({ route, navigation }) => {
 
   return (
     <View style={styles.bcgContainer}>
-      <Text>Hi</Text>
       <View style={styles.container}>
         <FlatList
           data={posts}
@@ -151,7 +163,7 @@ const styles = StyleSheet.create({
   bcgContainer: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#688854",
+    backgroundColor: "#FFFFFF",
   },
   container: {
     marginHorizontal: 16,
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    fontWeight: 400,
+    // fontWeight: 400,
     fontSize: 16,
     marginBottom: 10,
   },
