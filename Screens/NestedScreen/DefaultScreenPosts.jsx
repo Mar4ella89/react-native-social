@@ -25,115 +25,24 @@ import { EvilIcons } from "@expo/vector-icons";
 
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  console.log("posts", posts);
+
   const { userId } = useSelector((state) => state.auth);
 
-  const getAllPost = async () => {
-    // const response = db.collection("posts");
-    // const data = await response.get();
-    // data.docs.forEach((item) => {
-    //   setPosts([...posts, item.data()]);
-    // });
-    // };
-
-    const q = query(collection(db, "posts"));
+  const getAllPost = async (userId) => {
+    const q = query(
+      collection(db, "posts"),
+      where("userId", "==", `${userId}`)
+    );
     const querySnapshot = await getDocs(q);
 
-    console.log(querySnapshot);
-
-    // querySnapshot.forEach((doc) => {
-    //   console.log(doc.id, " => ", doc.data());
-    //   ({ ...doc.data(), id: doc.id });
-    //   // setPosts([...posts, doc.data()]);
-    //   // setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // });
-
-    // ---------------rezult ok (work)--------------
-
-    // querySnapshot.forEach((doc) => {
-    //   console.log(doc.data());
-    //   setPosts([...posts, { ...doc.data(), id: doc.id }]);
-    // });
-
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       setPosts((prevPosts) => [...prevPosts, { ...doc.data(), id: doc.id }]);
     });
-
-    // ---------------rezult ok (work)--------------
-
-    // setPosts(
-    //   querySnapshot.forEach(
-    //     (doc) => ({ ...doc.data(), id: doc.id })
-    // console.log(doc.data());
-    // setPosts([...posts, { ...doc.data(), id: doc.id }]);
-    // setPosts([...posts, ...doc.data()])
-    //   )
-    // );
-    // setPosts([
-    //   ...posts,
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.id, " => ", doc.data());
-    //     ({ ...doc.data(), id: doc.id });
-    //   }),
-    // ]);
-
-    // ---------------rezult ok--------------
-    // setPosts(querySnapshot.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // querySnapshot.map((doc) => {
-    //   console.log(doc.data());
-    //   setPosts((prevPost) => [...prevPost, { ...doc.data(), id: doc.id }]);
-    // });
   };
 
-  // const getAllPost = async () => {
-  //   try {
-  //     const q = query(
-  //       collection(db, "posts")
-  //       // where("userId", "==", `${userId}`)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-  //     setPosts(
-  //       querySnapshot.map((doc) => {
-  //         ({ ...doc.data(), id: doc.id });
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.log("Ошибка getAllPost", error.message);
-  //   }
-  // };
-  // ----------------------
-  //   try {
-  //     const ref = query(
-  //       console.log(posts),
-  //       collection(db, "posts"),
-  //       where("userId", "==", `${userId}`)
-  //     );
-  //     console.log("ref", ref);
-  //     onSnapshot(ref, (snapshot) => {
-  //       setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //     });
-  //   } catch (error) {
-  //     console.log("Ошибка getAllPost", error.message);
-  //   }
-  // };
-
-  // ----------------------
-  // const getAllPost = async () => {
-  //   // const db = getFirestore();
-  //   console.log("db", db);
-  //   await db
-  //     .firestore()
-  //     .collection("posts")
-  //     .onSnapshot((data) =>
-  //       setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-  //     );
-  // };
-
   useEffect(() => {
-    console.log("d");
-    getAllPost();
-  }, []);
+    getAllPost(userId);
+  }, [userId]);
 
   return (
     <View style={styles.bcgContainer}>
