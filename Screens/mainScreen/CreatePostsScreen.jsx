@@ -33,8 +33,6 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const { userId, nickname } = useSelector((state) => state.auth);
 
-  const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
-
   useEffect(() => {
     (async () => {
       await Camera.requestCameraPermissionsAsync();
@@ -66,13 +64,12 @@ const CreatePostsScreen = ({ navigation }) => {
     setIsCamera(false);
     setPhoto("");
 
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: "DefaultScreenPosts" }],
-    // });
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "DefaultScreenPosts" }],
+    });
 
     navigation.navigate("DefaultScreenPosts");
-    setIsUpdateNeeded(true);
   };
 
   const uploadPostToServer = async () => {

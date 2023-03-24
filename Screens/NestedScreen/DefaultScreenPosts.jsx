@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useLayoutEffect } from "react";
 
 import {
   StyleSheet,
@@ -20,28 +19,8 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const { userId } = useSelector((state) => state.auth);
   console.log(posts);
-  // const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
 
-  // useEffect(() => {
-  //   const getPostsFromServer = async (userId) => {
-  //     console.log(userId);
-  //     const q = query(
-  //       collection(db, "posts"),
-  //       where("userId", "==", `${userId}`)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-  //     console.log(querySnapshot);
-
-  //     const newPosts = querySnapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-
-  //     setPosts(newPosts.reverse());
-  //     setIsUpdateNeeded(false);
-  //   };
-  //   getPostsFromServer(userId);
-  // }, [isUpdateNeeded, userId]);
+  const [loading, setLoading] = useState(true);
 
   const getPostsFromServer = async (userId) => {
     console.log(userId);
@@ -58,21 +37,27 @@ const DefaultScreenPosts = ({ route, navigation }) => {
     }));
 
     setPosts(newPosts.reverse());
+    setLoading(false);
   };
 
   useEffect(() => {
     getPostsFromServer(userId);
   }, [userId]);
-  // useLayoutEffect(() => {
-  //   getAllPost(userId);
-  // }, [userId]);
 
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.bcgContainer}>
       <View style={styles.container}>
         <FlatList
           data={posts}
           keyExtractor={(item, indx) => indx.toString()}
+          // refreshing={refreshing}
           renderItem={({ item }) => (
             <View style={styles.imageContainer}>
               <Image source={{ uri: item.photo }} style={styles.image} />
