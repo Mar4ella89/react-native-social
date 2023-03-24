@@ -17,8 +17,16 @@ const PostsScreen = () => {
         name="DefaultScreenPosts"
         component={DefaultScreenPosts}
       />
-      <NestedScreen.Screen name="CommentsScreen" component={CommentsScreen} />
-      <NestedScreen.Screen name="MapScreen" component={MapScreen} />
+      <NestedScreen.Screen
+        name="CommentsScreen"
+        component={CommentsScreen}
+        options={{ title: "Комментарии" }}
+      />
+      <NestedScreen.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{ title: "Карта" }}
+      />
     </NestedScreen.Navigator>
   );
 };

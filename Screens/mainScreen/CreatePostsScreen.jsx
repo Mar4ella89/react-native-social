@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import firebase from "firebase/app";
 import {
   View,
@@ -27,10 +27,13 @@ const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
   const [comment, setComment] = useState("");
+  const [title, setTitle] = useState("");
   const [isCamera, setIsCamera] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
 
   const { userId, nickname } = useSelector((state) => state.auth);
+
+  const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -58,45 +61,39 @@ const CreatePostsScreen = ({ navigation }) => {
     setCameraReady(true);
   };
 
-  const sendPhoto = () => {
-    uploadPostToServer();
-
-    navigation.navigate("DefaultScreenPosts");
-    // navigation.navigate("DefaultScreenPosts", { photo, location });
+  const sendPhoto = async () => {
+    await uploadPostToServer();
     setIsCamera(false);
     setPhoto("");
+
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: "DefaultScreenPosts" }],
+    // });
+
+    navigation.navigate("DefaultScreenPosts");
+    setIsUpdateNeeded(true);
   };
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    // const createPost = await db
-    //   .initializeApp(firebaseConfig)
-    //   .firestore()
-    //   .collection("posts")
-    //   .add({ photo, comment, location: location.coords, userId, nickname });
 
     try {
       const db = getFirestore();
-      // console.log(db);
       const newCollectionRef = collection(db, "posts");
       await addDoc(newCollectionRef, {
-        // photo,
-        // comment,
-        // location: location.coords,
-        // userId,
-        // nickname,
         userId: userId,
         photo: photo,
         comment: comment,
+        title: title,
         location: {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         },
-        // created: firebase.firestore.FieldValue.serverTimestamp(),
         nickname: nickname,
       });
       console.log(`Коллекция создана!`);
-      // return serverData;
+      // navigation.navigate("DefaultScreenPosts");
     } catch (error) {
       console.error("Ошибка создания коллекции:", error);
     }
@@ -119,27 +116,6 @@ const CreatePostsScreen = ({ navigation }) => {
       console.log(`errorCode: ${errorCode}, errorMessage: ${errorMessage}`);
     }
   };
-
-  // const uploadPostToServer = async () => {
-  //   const photo = await uploadPhotoToServer();
-  //   const createPost = await db
-  //     .firestore()
-  //     .collection("posts")
-  //     .add({ photo, comment, location: location.coords, userId, nickname });
-  // };
-
-  // const uploadPhotoToServer = async () => {
-  //   const response = await fetch(photo);
-  //   const file = await response.blob();
-  //   const uniquePostId = Date.now().toString();
-  //   await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-  //   const processedPhoto = await db
-  //     .storage()
-  //     .ref("postImage")
-  //     .child(uniquePostId)
-  //     .getDownloadURL();
-  //   return processedPhoto;
-  // };
 
   if (!isCamera) {
     return (
@@ -172,6 +148,8 @@ const CreatePostsScreen = ({ navigation }) => {
               textAlign={"left"}
               placeholder={"Название..."}
               placeholderTextColor={"#BDBDBD"}
+              value={title}
+              onChangeText={setTitle}
               // value={state.email}
               // onFocus={() => setIsFocused("email")}
               // onBlur={() => setIsFocused(null)}
@@ -261,16 +239,8 @@ const CreatePostsScreen = ({ navigation }) => {
             textAlign={"left"}
             placeholder={"Название..."}
             placeholderTextColor={"#BDBDBD"}
-            onChangeText={setComment}
-            // value={state.email}
-            // onFocus={() => setIsFocused("email")}
-            // onBlur={() => setIsFocused(null)}
-            // onChangeText={(value) =>
-            //   setState((prevState) => ({
-            //     ...prevState,
-            //     email: value,
-            //   }))
-            // }
+            onChangeText={setTitle}
+            value={title}
           />
           <View style={styles.inputMapWrapper}>
             <Feather
@@ -285,21 +255,10 @@ const CreatePostsScreen = ({ navigation }) => {
                   ...styles.formInputMap,
                   marginTop: 16,
                 },
-
-                // isFocused === "email" ? styles.focused : null,
               ]}
               textAlign={"left"}
               placeholder={"Местность..."}
               placeholderTextColor={"#BDBDBD"}
-              // value={textLocation}
-              // onFocus={() => setIsFocused("email")}
-              // onBlur={() => setIsFocused(null)}
-              // onChangeText={(value) =>
-              //   setState((prevState) => ({
-              //     ...prevState,
-              //     email: value,
-              //   }))
-              // }
             />
           </View>
         </View>
@@ -308,10 +267,6 @@ const CreatePostsScreen = ({ navigation }) => {
           activeOpacity={0.8}
           style={styles.button}
           onPress={sendPhoto}
-          // () => {
-          // setIsCamera(false);
-
-          // }};
         >
           <Text style={styles.buttonTitle}>Опубликовать</Text>
         </TouchableOpacity>
@@ -367,23 +322,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   takePhotoContainer: {
-    // flex: 1,
     position: "absolute",
     top: 0,
     left: 0,
-    // borderColor: "#FFF",
-    // borderWidth: 1,
-    // borderRadius: 10,
+
     width: "100%",
     height: "100%",
   },
   takePhotoImg: {
     flex: 1,
-    // height: "100%",
-    // height: 200,
-    // width: 200,
-    // maxWidth: "100%",
-    // borderRadius: 10,
   },
   textInputWrapper: { marginTop: 8 },
   title: {

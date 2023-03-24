@@ -11,38 +11,61 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {
-  onSnapshot,
-  collection,
-  query,
-  orderBy,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../fireBase/config";
 
 import { EvilIcons } from "@expo/vector-icons";
 
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-
   const { userId } = useSelector((state) => state.auth);
+  console.log(posts);
+  // const [isUpdateNeeded, setIsUpdateNeeded] = useState(false);
 
-  const getAllPost = async (userId) => {
+  // useEffect(() => {
+  //   const getPostsFromServer = async (userId) => {
+  //     console.log(userId);
+  //     const q = query(
+  //       collection(db, "posts"),
+  //       where("userId", "==", `${userId}`)
+  //     );
+  //     const querySnapshot = await getDocs(q);
+  //     console.log(querySnapshot);
+
+  //     const newPosts = querySnapshot.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+
+  //     setPosts(newPosts.reverse());
+  //     setIsUpdateNeeded(false);
+  //   };
+  //   getPostsFromServer(userId);
+  // }, [isUpdateNeeded, userId]);
+
+  const getPostsFromServer = async (userId) => {
+    console.log(userId);
     const q = query(
       collection(db, "posts"),
       where("userId", "==", `${userId}`)
     );
     const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
 
-    querySnapshot.forEach((doc) => {
-      setPosts((prevPosts) => [...prevPosts, { ...doc.data(), id: doc.id }]);
-    });
+    const newPosts = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setPosts(newPosts.reverse());
   };
 
   useEffect(() => {
-    getAllPost(userId);
+    getPostsFromServer(userId);
   }, [userId]);
+  // useLayoutEffect(() => {
+  //   getAllPost(userId);
+  // }, [userId]);
 
   return (
     <View style={styles.bcgContainer}>
@@ -54,11 +77,11 @@ const DefaultScreenPosts = ({ route, navigation }) => {
             <View style={styles.imageContainer}>
               <Image source={{ uri: item.photo }} style={styles.image} />
               <View>
-                <Text style={styles.title}>{item.comment}</Text>
+                <Text style={styles.title}>{item.title}</Text>
               </View>
               <View style={styles.infoContainer}>
                 <TouchableOpacity
-                  title="CommentsScreen"
+                  title="Комментарии"
                   onPress={() =>
                     navigation.navigate("CommentsScreen", { postID: item.id })
                   }
@@ -66,7 +89,7 @@ const DefaultScreenPosts = ({ route, navigation }) => {
                   <EvilIcons name="comment" size={24} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  title="MapScreen"
+                  title="Карта"
                   onPress={() =>
                     navigation.navigate("MapScreen", {
                       location: item.location,
@@ -104,7 +127,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    // fontWeight: 400,
     fontSize: 16,
     marginBottom: 10,
   },
