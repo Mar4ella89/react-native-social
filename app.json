@@ -1,8 +1,10 @@
 {
   "expo": {
-    "name": "react-native-social",
+    "name": "React Native Social",
     "slug": "react-native-social",
     "version": "1.0.0",
+    "privacy": "public",
+    "description": "An application to view photo",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
