@@ -1,165 +1,76 @@
-// import React, { useState, useEffect } from "react";
-// import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-// import { useSelector } from "react-redux";
-// import { db } from "../../fireBase/config";
-
-// import { AntDesign } from "@expo/vector-icons";
-
-// const CommentsScreen = ({ route }) => {
-//   const [comments, setComments] = useState([]);
-
-//   const { postId } = route.params;
-//   const { nickname } = useSelector((state) => state.auth);
-
-//   // const createComment = async () => {
-//   //   console.log("db", db);
-//   //   console.log("postId", postId);
-//   //   console.log("comment", comments);
-//   //   console.log("nickname", nickname);
-//   //   await db
-//   //     .collection("post")
-//   //     .doc(postId)
-//   //     .collection("comments")
-//   //     .add({ comments, nickname });
-//   //   setComment("");
-//   // };
-//   useEffect(() => {
-//     const unsubscribe = db
-//       .collection("posts")
-//       .doc(postId)
-//       .collection("comments")
-//       .onSnapshot((snapshot) => {
-//         const comments = [];
-//         snapshot.forEach((doc) => {
-//           comments.push({ id: doc.id, ...doc.data() });
-//         });
-//         setComments(comments);
-//       });
-//     return unsubscribe;
-//   }, []);
-
-//   return (
-//     <View style={styles.bcgContainer}>
-//       <View style={styles.container}>
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Комментарий..."
-//           value={comments}
-//           onChangeText={setComments}
-//         />
-//         <TouchableOpacity
-//           style={styles.submitBtn}
-//           activeOpacity={0.8}
-//           onPress={createComment}
-//         >
-//           <AntDesign
-//             style={styles.submitBtnIcon}
-//             name="arrowup"
-//             size={24}
-//             color="black"
-//           />
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   bcgContainer: {
-//     flex: 1,
-//     justifyContent: "flex-end",
-//     backgroundColor: "#FFF",
-//   },
-//   container: {
-//     marginHorizontal: 16,
-//     marginBottom: 16,
-//   },
-//   input: {
-//     height: 50,
-//     borderWidth: 1,
-//     borderColor: "#E8E8E8",
-//     borderRadius: 50,
-//     padding: 16,
-//     position: "relative",
-//   },
-//   submitBtn: {
-//     position: "absolute",
-//     right: 5,
-//     top: 5,
-//     backgroundColor: "#FF6C00",
-//     borderRadius: 50,
-//   },
-//   submitBtnIcon: {
-//     padding: 8,
-//     color: "#FFF",
-//   },
-// });
-
-// export default CommentsScreen;
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  FlatList,
   Text,
+  SafeAreaView,
+  FlatList,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../fireBase/config";
+import { collection, addDoc, doc } from "firebase/firestore";
 
 import { AntDesign } from "@expo/vector-icons";
 
 const CommentsScreen = ({ route }) => {
-  const { postId } = route.params;
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
+
+  const { postId } = route.params;
   const { nickname } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    getAllPosts();
-  }, []);
-  const createPost = async () => {
-    db.firestore()
-      .collection("posts")
-      .doc(postId)
-      .collection("comments")
-      .add({ comment, nickname });
+  const createComment = async () => {
+    if (!comment || !nickname) {
+      return;
+    }
+    try {
+      const commRef = collection(db, "posts", postId, "comments");
+      console.log(commRef);
+      const newComment = { comment: comment, nickname: nickname };
+      await addDoc(commRef, newComment);
+      setComment("");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
-  const getAllPosts = async () => {
-    db.firestore()
-      .collection("posts")
-      .doc(postId)
-      .collection("comments")
-      .onSnapshot((data) =>
-        setAllComments(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      );
-  };
+  // const getAllPosts = async () => {
+  //   db.firestore()
+  //     .collection("posts")
+  //     .doc(postId)
+  //     .collection("comments")
+  //     .onSnapshot((data) =>
+  //       setAllComments(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  //     );
+  // };
 
   return (
     <View style={styles.bcgContainer}>
-      <FlatList
-        data={allComments}
-        renderItem={({ item }) => (
-          <View style={styles.commentContainer}>
-            <Text style={styles.comment}>{item.comment}</Text>
-            <Text style={styles.nickname}>{item.nickname}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
       <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            // data={allComments}
+            renderItem={({ item }) => (
+              <View style={styles.commentContainer}>
+                <Text>{item.nickname}</Text>
+                <Text>{item.comment}</Text>
+              </View>
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </SafeAreaView>
         <TextInput
           style={styles.input}
           placeholder="Комментарий..."
           value={comment}
           onChangeText={setComment}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.submitBtn}
           activeOpacity={0.8}
-          onPress={createPost}
+          onPress={createComment}
         >
           <AntDesign
             style={styles.submitBtnIcon}
@@ -167,6 +78,13 @@ const CommentsScreen = ({ route }) => {
             size={24}
             color="black"
           />
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.button}
+          onPress={createComment}
+        >
+          <Text style={styles.buttonTitle}>Опубликовать</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -182,6 +100,16 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     marginBottom: 16,
+  },
+  // container: {
+  //   flex: 1,
+  // },
+  commentContainer: {
+    borderWidth: 1,
+    borderColor: "#20b2aa",
+    marginHorizontal: 10,
+    padding: 10,
+    marginBottom: 10,
   },
   input: {
     height: 50,
@@ -202,9 +130,20 @@ const styles = StyleSheet.create({
     padding: 8,
     color: "#FFF",
   },
-  commentContainer: {
-    marginHorizontal: 16,
-    marginBottom: 16,
+  button: {
+    marginTop: 32,
+    backgroundColor: "#FF6C00",
+    height: 51,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonTitle: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    fontStyle: "normal",
+    lineHeight: 19,
+    color: "#FFFFFF",
   },
 });
 

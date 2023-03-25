@@ -76,7 +76,7 @@ const CreatePostsScreen = ({ navigation }) => {
     const photo = await uploadPhotoToServer();
 
     try {
-      const db = getFirestore();
+      // const db = getFirestore();
       const newCollectionRef = collection(db, "posts");
       await addDoc(newCollectionRef, {
         userId: userId,
