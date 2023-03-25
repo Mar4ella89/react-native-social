@@ -7,6 +7,9 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../fireBase/config";
@@ -21,11 +24,13 @@ const CommentsScreen = ({ route }) => {
   const { postId } = route.params;
   const { nickname } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    getAllPosts();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
-  const getAllPosts = async () => {
+  useEffect(() => {
+    getAllPosts(postId);
+  }, [postId]);
+
+  const getAllPosts = async (postId) => {
     console.log(postId);
     const q = query(collection(db, "posts", postId, "comments"));
     const querySnapshot = await getDocs(q);
@@ -40,6 +45,14 @@ const CommentsScreen = ({ route }) => {
     setLoading(false);
   };
 
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   const createComment = async () => {
     if (!comment || !nickname) {
       return;
@@ -49,64 +62,52 @@ const CommentsScreen = ({ route }) => {
       console.log(commRef);
       const newComment = { comment: comment, nickname: nickname };
       await addDoc(commRef, newComment);
+      setAllComments([...allComments, newComment]);
       setComment("");
     } catch (error) {
       console.error("Error adding document: ", error);
     }
   };
 
-  // const getAllPosts = async () => {
-  //   db.firestore()
-  //     .collection("posts")
-  //     .doc(postId)
-  //     .collection("comments")
-  //     .onSnapshot((data) =>
-  //       setAllComments(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-  //     );
-  // };
-
   return (
-    <View style={styles.bcgContainer}>
-      <View style={styles.container}>
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={allComments}
-            renderItem={({ item }) => (
-              <View style={styles.commentContainer}>
-                <Text>{item.nickname}</Text>
-                <Text>{item.comment}</Text>
-              </View>
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </SafeAreaView>
-        <TextInput
-          style={styles.input}
-          placeholder="Комментарий..."
-          value={comment}
-          onChangeText={setComment}
-        />
-        {/* <TouchableOpacity
-          style={styles.submitBtn}
-          activeOpacity={0.8}
-          onPress={createComment}
-        >
-          <AntDesign
-            style={styles.submitBtnIcon}
-            name="arrowup"
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity> */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.button}
-          onPress={createComment}
-        >
-          <Text style={styles.buttonTitle}>Опубликовать</Text>
-        </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.bcgContainer}>
+        <View style={styles.container}>
+          <SafeAreaView>
+            <FlatList
+              data={allComments}
+              renderItem={({ item }) => (
+                <View style={styles.commentContainer}>
+                  <Text>{item.nickname}</Text>
+                  <Text>{item.comment}</Text>
+                </View>
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </SafeAreaView>
+          <View style={styles.containerInput}>
+            <TextInput
+              style={styles.input}
+              placeholder="Комментарий..."
+              value={comment}
+              onChangeText={setComment}
+            />
+            <TouchableOpacity
+              style={styles.submitBtn}
+              activeOpacity={0.8}
+              onPress={createComment}
+            >
+              <AntDesign
+                style={styles.submitBtnIcon}
+                name="arrowup"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -116,16 +117,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: "#FFF",
   },
-  container: {
-    marginHorizontal: 16,
+  container: { marginHorizontal: 16 },
+  containerInput: {
     marginBottom: 16,
   },
-  // container: {
-  //   flex: 1,
-  // },
+
   commentContainer: {
     borderWidth: 1,
-    borderColor: "#20b2aa",
+    backgroundColor: "rgba(0, 0, 0, 0.03)",
+    borderColor: "rgba(0, 0, 0, 0.03)",
+    borderRadius: 6,
     marginHorizontal: 10,
     padding: 10,
     marginBottom: 10,
@@ -148,21 +149,6 @@ const styles = StyleSheet.create({
   submitBtnIcon: {
     padding: 8,
     color: "#FFF",
-  },
-  button: {
-    marginTop: 32,
-    backgroundColor: "#FF6C00",
-    height: 51,
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonTitle: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    fontStyle: "normal",
-    lineHeight: 19,
-    color: "#FFFFFF",
   },
 });
 
