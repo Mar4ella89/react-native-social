@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../fireBase/config";
-import { collection, addDoc, doc } from "firebase/firestore";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
 
 import { AntDesign } from "@expo/vector-icons";
 
@@ -20,6 +20,25 @@ const CommentsScreen = ({ route }) => {
 
   const { postId } = route.params;
   const { nickname } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
+  const getAllPosts = async () => {
+    console.log(postId);
+    const q = query(collection(db, "posts", postId, "comments"));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+
+    const newComment = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setAllComments(newComment.reverse());
+    setLoading(false);
+  };
 
   const createComment = async () => {
     if (!comment || !nickname) {
@@ -51,7 +70,7 @@ const CommentsScreen = ({ route }) => {
       <View style={styles.container}>
         <SafeAreaView style={styles.container}>
           <FlatList
-            // data={allComments}
+            data={allComments}
             renderItem={({ item }) => (
               <View style={styles.commentContainer}>
                 <Text>{item.nickname}</Text>
