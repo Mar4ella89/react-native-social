@@ -36,14 +36,11 @@ const CreatePostsScreen = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       await Camera.requestCameraPermissionsAsync();
-
       let { status } = await Location.requestForegroundPermissionsAsync();
-
       if (status !== "granted") {
         setErrorMsg("В доступе местонахождения отказано");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync();
       setLocation(location);
     })();
@@ -76,7 +73,6 @@ const CreatePostsScreen = ({ navigation }) => {
     const photo = await uploadPhotoToServer();
 
     try {
-      // const db = getFirestore();
       const newCollectionRef = collection(db, "posts");
       await addDoc(newCollectionRef, {
         userId: userId,
@@ -90,7 +86,6 @@ const CreatePostsScreen = ({ navigation }) => {
         nickname: nickname,
       });
       console.log(`Коллекция создана!`);
-      // navigation.navigate("DefaultScreenPosts");
     } catch (error) {
       console.error("Ошибка создания коллекции:", error);
     }

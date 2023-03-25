@@ -20,7 +20,7 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   const { userId } = useSelector((state) => state.auth);
   console.log(posts);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const getPostsFromServer = async (userId) => {
     console.log(userId);
@@ -41,6 +41,7 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getPostsFromServer(userId);
   }, [userId]);
 
@@ -54,39 +55,44 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   return (
     <View style={styles.bcgContainer}>
       <View style={styles.container}>
-        <FlatList
-          data={posts}
-          keyExtractor={(item, indx) => indx.toString()}
-          // refreshing={refreshing}
-          renderItem={({ item }) => (
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: item.photo }} style={styles.image} />
-              <View>
-                <Text style={styles.title}>{item.title}</Text>
+        {posts.length > 0 ? (
+          <FlatList
+            data={posts}
+            keyExtractor={(item, indx) => indx.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.imageContainer}>
+                <Image source={{ uri: item.photo }} style={styles.image} />
+                <View>
+                  <Text style={styles.title}>{item.title}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                  <TouchableOpacity
+                    title="Комментарии"
+                    onPress={() =>
+                      navigation.navigate("CommentsScreen", { postId: item.id })
+                    }
+                  >
+                    <EvilIcons name="comment" size={24} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    title="Карта"
+                    onPress={() =>
+                      navigation.navigate("MapScreen", {
+                        location: item.location,
+                      })
+                    }
+                  >
+                    <EvilIcons name="location" size={24} color="black" />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.infoContainer}>
-                <TouchableOpacity
-                  title="Комментарии"
-                  onPress={() =>
-                    navigation.navigate("CommentsScreen", { postId: item.id })
-                  }
-                >
-                  <EvilIcons name="comment" size={24} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  title="Карта"
-                  onPress={() =>
-                    navigation.navigate("MapScreen", {
-                      location: item.location,
-                    })
-                  }
-                >
-                  <EvilIcons name="location" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        />
+            )}
+          />
+        ) : (
+          <View>
+            <Text>You don't have any posts yet...</Text>
+          </View>
+        )}
       </View>
     </View>
   );
