@@ -18,8 +18,6 @@ import { getFirestore } from "firebase/firestore";
 import { storage } from "../../fireBase/config";
 import { db } from "../../fireBase/config";
 
-// import db from "../../fireBase/config";
-
 import { Feather } from "@expo/vector-icons";
 
 const CreatePostsScreen = ({ navigation }) => {
@@ -134,23 +132,12 @@ const CreatePostsScreen = ({ navigation }) => {
                   ...styles.formInput,
                   marginTop: 32,
                 },
-
-                // isFocused === "email" ? styles.focused : null,
               ]}
               textAlign={"left"}
               placeholder={"Название..."}
               placeholderTextColor={"#BDBDBD"}
               value={title}
               onChangeText={setTitle}
-              // value={state.email}
-              // onFocus={() => setIsFocused("email")}
-              // onBlur={() => setIsFocused(null)}
-              // onChangeText={(value) =>
-              //   setState((prevState) => ({
-              //     ...prevState,
-              //     email: value,
-              //   }))
-              // }
             />
             <View style={styles.inputMapWrapper}>
               <Feather
@@ -165,21 +152,10 @@ const CreatePostsScreen = ({ navigation }) => {
                     ...styles.formInputMap,
                     marginTop: 16,
                   },
-
-                  // isFocused === "email" ? styles.focused : null,
                 ]}
                 textAlign={"left"}
                 placeholder={"Местность..."}
                 placeholderTextColor={"#BDBDBD"}
-                // value={state.email}
-                // onFocus={() => setIsFocused("email")}
-                // onBlur={() => setIsFocused(null)}
-                // onChangeText={(value) =>
-                //   setState((prevState) => ({
-                //     ...prevState,
-                //     email: value,
-                //   }))
-                // }
               />
             </View>
           </View>
